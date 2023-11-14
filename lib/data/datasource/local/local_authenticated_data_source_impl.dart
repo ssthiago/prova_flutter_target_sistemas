@@ -1,3 +1,4 @@
+import 'package:prova_flutter_target_sistemas/core/app_constants.dart';
 import 'package:prova_flutter_target_sistemas/data/datasource/local/local_authenticated_datasource.dart';
 import 'package:prova_flutter_target_sistemas/data/models/imformation_model.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
@@ -19,7 +20,7 @@ class LocalInformationDataSourceImpl implements LocalAuthenticatedDataSource {
     List<InformationModel> informations = await getSavedInformation();
     List<String> currentInformation = informations.map((info) => info.text).toList();
     currentInformation.add(information.text);
-    await sharedPreferences.setStringList('saved_information', currentInformation);
+    await sharedPreferences.setStringList(AppConstants.savedInformationKey, currentInformation);
   }
 
   @override
@@ -27,14 +28,14 @@ class LocalInformationDataSourceImpl implements LocalAuthenticatedDataSource {
     List<InformationModel> informations = await getSavedInformation();
     List<String> currentInformation = informations.map((info) => info.text).toList();
     currentInformation.remove(information.text);
-    await sharedPreferences.setStringList('saved_information', currentInformation);
+    await sharedPreferences.setStringList(AppConstants.savedInformationKey, currentInformation);
   }
 
   @override
   Future<User?> getAuthenticatedUser() async {
     // Lógica para salvar informações de autenticação
-    String? username = sharedPreferences.getString('username');
-    String? password = sharedPreferences.getString('password');
+    String? username = sharedPreferences.getString(AppConstants.usernameKey);
+    String? password = sharedPreferences.getString(AppConstants.passwordKey);
     return username != null && password != null
         ? User(username: username, password: password)
         : null;
