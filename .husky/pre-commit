@@ -1,0 +1,25 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+branch="$(git rev-parse --abbrev-ref HEAD)" # A branch aonde esta sendo feito o commit
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+
+if [ "$branch" = "main" ]; then # Se a sua branch principal for a master basta mudar de main para master
+  # Mudando a cor do terminal e mostrando um erro
+  echo -e "${RED}Jovem, você não pode fazer commit's direto na branch main.${NC}"
+  exit 1 # Cancela a operação
+fi
+
+if [ "$branch" = "develop" ]; then
+  # Mudando a cor do terminal e mostrando um erro
+  echo -e "${RED}Jovem, você não pode fazer commit's direto na branch develop.${NC}"
+  exit 1 # Cancela a operação
+fi
+# Caso queira adicionar mais branches o processo é o mesmo,
+# basta copiar o if e mudar o nome da branch
+
+# Executa os testes unitários
+#flutter test
+
+

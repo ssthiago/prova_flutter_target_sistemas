@@ -1,0 +1,39 @@
+#!/usr/bin/env sh
+#// if we hve a cmd that is rinning npx cz that means finalize and commit
+FILE=commit.cmd
+if test -f "$FILE"; then
+    echo "$FILE exists."
+    rm commit.cmd
+    exit 0;
+fi
+
+#echo "husky prepare commit message, inputs $0 $1 $2 $3"
+
+# Verifique se o arquivo .git/MERGE_MSG contém "feature/", "release/" ou "bugfix/. Se contem,é o gitflow que esta chamando o merge,
+# então não executa o commitzen, já que o gitflow criar o merge e a menssagem de merge automaticamente"
+if [ -f .git/MERGE_MSG ]; then
+   #echo "Conteúdo de .git/MERGE_MSG:"
+   #cat .git/MERGE_MSG
+
+   if grep -q "feature/" .git/MERGE_MSG || grep -q "hotfix/" .git/MERGE_MSG || grep -q "release/" .git/MERGE_MSG || grep -q "tag" .git/MERGE_MSG; then
+     echo "O GitFlow fará o merge automaticamente,o Commitizen não será executado..."
+     exit 0
+   fi
+fi
+
+# Verifique se o arquivo .git/RELEASE_MSG existe, se existir, o GitFlow está fazendo o merge de uma release
+if [ -f .git/RELEASE_MSG ]; then
+   echo "O GitFlow fará o merge de uma release, o Commitizen não será executado..."
+   exit 0
+fi
+
+
+#// se for Windows abre uma janela cmd e executa o comando npx cz
+case `uname` in
+    *CYGWIN*|*MINGW*|*MSYS*)
+        echo "npx cz && exit" > commit.cmd
+        start commit.cmd
+    exit 1;;
+esac
+. "$(dirname "$0")/_/husky.sh"
+exec < /dev/tty && npx cz
