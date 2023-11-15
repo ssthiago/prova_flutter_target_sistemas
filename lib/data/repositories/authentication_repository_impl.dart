@@ -1,8 +1,8 @@
 import 'package:prova_flutter_target_sistemas/data/datasource/remote/authentication_datasource.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
-import 'package:prova_flutter_target_sistemas/domian/repositories/authentication_repository.dart';
+import 'package:prova_flutter_target_sistemas/domian/repositories/i_authentication_repository.dart';
 
-class AuthenticationRepositoryImpl implements AuthenticationRepository {
+class AuthenticationRepositoryImpl implements IAuthenticationRepository {
   final AuthenticationDataSource authenticationDataSource;
 
   AuthenticationRepositoryImpl(this.authenticationDataSource);

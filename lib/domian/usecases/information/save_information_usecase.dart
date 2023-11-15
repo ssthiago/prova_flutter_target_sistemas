@@ -1,8 +1,8 @@
 import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
-import 'package:prova_flutter_target_sistemas/domian/repositories/information_repository.dart';
+import 'package:prova_flutter_target_sistemas/domian/repositories/i_information_repository.dart';
 
 class SaveInformation {
-  final InformationRepository repository;
+  final IInformationRepository repository;
 
   SaveInformation(this.repository);
 
