@@ -1,16 +1,16 @@
-import 'package:prova_flutter_target_sistemas/data/datasource/local/local_authenticated_datasource.dart';
+import 'package:prova_flutter_target_sistemas/data/datasource/remote/authentication_datasource.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 import 'package:prova_flutter_target_sistemas/domian/repositories/authentication_repository.dart';
 
 class AuthenticationRepositoryImpl implements AuthenticationRepository {
-  final LocalAuthenticatedDataSource localInformationDataSource;
+  final AuthenticationDataSource authenticationDataSource;
 
-  AuthenticationRepositoryImpl(this.localInformationDataSource);
+  AuthenticationRepositoryImpl(this.authenticationDataSource);
 
   @override
   Future<bool> authenticateUser(User user) async {
     // Implementação da autenticação utilizando localDataSource
-    //return await localInformationDataSource.authenticateUser(UserModel.fromEntity(user));
-    return true;
+    //return await authenticationDataSource.authenticateUser(user:UserModel.fromEntity(user));
+    return await authenticationDataSource.authenticateUser(user: user);
   }
 }
