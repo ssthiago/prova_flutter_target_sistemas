@@ -16,8 +16,7 @@ class LoginUseCase implements IUseCase<LoginParams, Result> {
   Future<Result> call(LoginParams params) async {
     final LoginSuccess loginSuccess = LoginSuccess();
     User authenticatedUser = User(username: params.username, password: params.password);
-    bool isLoginSuccess = await repository.authenticateUser(authenticatedUser);
-    print('aa');
+    bool isLoginSuccess = await repository.authenticateUser(user: authenticatedUser);
     if (isLoginSuccess) {
       loginSuccess.authenticatedUser = authenticatedUser;
       return loginSuccess;

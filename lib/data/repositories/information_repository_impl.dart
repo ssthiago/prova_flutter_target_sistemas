@@ -3,7 +3,7 @@ import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
 import 'package:prova_flutter_target_sistemas/domian/repositories/i_information_repository.dart';
 
 class InformationRepositoryImpl implements IInformationRepository {
-  final LocalAuthenticatedDataSource localInformationDataSource;
+  final ILocalAuthenticatedDataSource localInformationDataSource;
 
   InformationRepositoryImpl(this.localInformationDataSource);
 
