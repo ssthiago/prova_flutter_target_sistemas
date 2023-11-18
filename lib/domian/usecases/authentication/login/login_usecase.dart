@@ -14,14 +14,18 @@ class LoginUseCase implements IUseCase<LoginParams, Result> {
 
   @override
   Future<Result> call(LoginParams params) async {
-    final LoginSuccess loginSuccess = LoginSuccess();
-    User authenticatedUser = User(username: params.username, password: params.password);
-    bool isLoginSuccess = await repository.authenticateUser(user: authenticatedUser);
-    if (isLoginSuccess) {
-      loginSuccess.authenticatedUser = authenticatedUser;
-      return loginSuccess;
-    } else {
-      return LoginFailure('Username ou senha inválidos');
+    try {
+      User authenticatedUser = User(username: params.username, password: params.password);
+      bool isLoginSuccess = await repository.authenticateUser(user: authenticatedUser);
+
+      if (isLoginSuccess) {
+        return LoginSuccess(authenticatedUser: authenticatedUser);
+      } else {
+        return LoginFailure('Username ou senha inválidos');
+      }
+    } catch (e) {
+      // Tratar exceções se necessário
+      throw Exception('Erro inesperado durante a autenticação : ${e.toString()}');
     }
   }
 }

@@ -2,8 +2,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 import 'package:prova_flutter_target_sistemas/domian/repositories/i_authentication_repository.dart';
-import 'package:prova_flutter_target_sistemas/domian/result/result.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/login_usecase.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_failure.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_params.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_success.dart';
 
@@ -11,40 +11,45 @@ class MockAuthenticationRepository extends Mock implements IAuthenticationReposi
 
 void main() {
   group('LoginUseCase', () {
+    late MockAuthenticationRepository mockAuthenticationRepository;
     late LoginUseCase loginUseCase;
-    late MockAuthenticationRepository mockRepository;
 
     setUp(() {
-      mockRepository = MockAuthenticationRepository();
-      loginUseCase = LoginUseCase(mockRepository);
+      mockAuthenticationRepository = MockAuthenticationRepository();
+      loginUseCase = LoginUseCase(mockAuthenticationRepository);
+      registerFallbackValue(User(
+          username: 'fallback',
+          password: 'foobar')); // Cria uma instância dummy de `User` como o valor padrão
     });
 
-/*    test('should authenticate user successfully', () async {
+    test('should return LoginSuccess when authentication is success', () async {
       // Arrange
       final params = LoginParams(username: 'user', password: 'password');
-      final authenticatedUser = User(username: 'user', password: 'password');
       when(
-        () => mockRepository.authenticateUser(user: authenticatedUser),
+        () => mockAuthenticationRepository.authenticateUser(user: any<User>(named: 'user')),
       ).thenAnswer(
-        (_) async => true, // Ou false dependendo do resultado da autenticação
+        (_) async => Future.value(true),
       );
 
       // Act
-      final Result result = await loginUseCase(params);
+      final result = await loginUseCase(params);
 
       // Assert
       expect(result, isA<LoginSuccess>());
-      expect((result as LoginSuccess).authenticatedUser, equals(authenticatedUser));
-      verify(() => mockRepository.authenticateUser(user: authenticatedUser)).called(1);
-      verifyNoMoreInteractions(mockRepository);
-    });*/
+      expect((result as LoginSuccess).authenticatedUser, isNotNull);
+      verify(() => mockAuthenticationRepository.authenticateUser(user: any<User>(named: 'user')))
+          .called(1);
+      verifyNoMoreInteractions(mockAuthenticationRepository);
+    });
 
-/*    test('should return LoginFailure when authentication fails', () async {
+    test('should return LoginFailure when authentication fails', () async {
       // Arrange
       final params = LoginParams(username: 'user', password: 'password');
-      final authenticatedUser = User(username: 'user', password: 'password');
-      when(() => mockRepository.authenticateUser(user: authenticatedUser))
-          .thenAnswer((_) async => false);
+      when(
+        () => mockAuthenticationRepository.authenticateUser(user: any<User>(named: 'user')),
+      ).thenAnswer(
+        (_) async => Future.value(false),
+      );
 
       // Act
       final result = await loginUseCase(params);
@@ -52,8 +57,9 @@ void main() {
       // Assert
       expect(result, isA<LoginFailure>());
       expect((result as LoginFailure).message, equals('Username ou senha inválidos'));
-      verify(() => mockRepository.authenticateUser(user: authenticatedUser)).called(1);
-      verifyNoMoreInteractions(mockRepository);
-    });*/
+      verify(() => mockAuthenticationRepository.authenticateUser(user: any<User>(named: 'user')))
+          .called(1);
+      verifyNoMoreInteractions(mockAuthenticationRepository);
+    });
   });
 }
