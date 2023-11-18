@@ -1,4 +1,3 @@
-import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
 import 'package:prova_flutter_target_sistemas/domian/repositories/i_information_repository.dart';
 import 'package:prova_flutter_target_sistemas/domian/result/result.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/i_usecase.dart';
@@ -7,10 +6,10 @@ import 'package:prova_flutter_target_sistemas/domian/usecases/information/save_i
 
 import 'result/save_information_failure.dart';
 
-class SaveInformation implements IUseCase<SaveInformationParams, Result> {
+class SaveInformationUseCase implements IUseCase<SaveInformationParams, Result> {
   final IInformationRepository repository;
 
-  SaveInformation(this.repository);
+  SaveInformationUseCase(this.repository);
 
   @override
   Future<Result> call(SaveInformationParams params) async {
