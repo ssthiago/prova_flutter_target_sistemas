@@ -1,5 +1,5 @@
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
-import 'package:prova_flutter_target_sistemas/domian/repositories/authentication_repository.dart';
+import 'package:prova_flutter_target_sistemas/domian/repositories/i_authentication_repository.dart';
 import 'package:prova_flutter_target_sistemas/domian/result/result.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_params.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/i_usecase.dart';
@@ -8,20 +8,24 @@ import 'result/login_failure.dart';
 import 'result/login_success.dart';
 
 class LoginUseCase implements IUseCase<LoginParams, Result> {
-  final AuthenticationRepository repository;
+  final IAuthenticationRepository repository;
 
   LoginUseCase(this.repository);
 
   @override
   Future<Result> call(LoginParams params) async {
-    final LoginSuccess loginSuccess = LoginSuccess();
-    User authenticatedUser = User(username: params.username, password: params.password);
-    bool isLoginSuccess = await repository.authenticateUser(authenticatedUser);
-    if (isLoginSuccess) {
-      loginSuccess.authenticatedUser = authenticatedUser;
-      return loginSuccess;
-    } else {
-      return LoginFailure('Username ou senha inválidos');
+    try {
+      User authenticatedUser = User(username: params.username, password: params.password);
+      bool isLoginSuccess = await repository.authenticateUser(user: authenticatedUser);
+
+      if (isLoginSuccess) {
+        return LoginSuccess(authenticatedUser: authenticatedUser);
+      } else {
+        return LoginFailure('Username ou senha inválidos');
+      }
+    } catch (e) {
+      // Tratar exceções se necessário
+      throw Exception('Erro inesperado durante a autenticação : ${e.toString()}');
     }
   }
 }

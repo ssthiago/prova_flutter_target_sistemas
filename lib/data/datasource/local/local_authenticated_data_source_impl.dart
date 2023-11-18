@@ -4,14 +4,15 @@ import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class LocalInformationDataSourceImpl implements LocalAuthenticatedDataSource {
+class LocalInformationDataSourceImpl implements ILocalAuthenticatedDataSource {
   final SharedPreferences sharedPreferences;
 
   LocalInformationDataSourceImpl(this.sharedPreferences);
 
   @override
   Future<List<Information>> getSavedInformation() async {
-    final List<String>? savedInformation = sharedPreferences.getStringList('saved_information');
+    final List<String>? savedInformation =
+        sharedPreferences.getStringList(AppConstants.savedInformationKey);
     return savedInformation?.map((info) => Information(text: info)).toList() ?? [];
   }
 

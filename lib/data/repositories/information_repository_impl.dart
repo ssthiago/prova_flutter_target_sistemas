@@ -1,9 +1,9 @@
 import 'package:prova_flutter_target_sistemas/data/datasource/local/local_authenticated_datasource.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
-import 'package:prova_flutter_target_sistemas/domian/repositories/information_repository.dart';
+import 'package:prova_flutter_target_sistemas/domian/repositories/i_information_repository.dart';
 
-class InformationRepositoryImpl implements InformationRepository {
-  final LocalAuthenticatedDataSource localInformationDataSource;
+class InformationRepositoryImpl implements IInformationRepository {
+  final ILocalAuthenticatedDataSource localInformationDataSource;
 
   InformationRepositoryImpl(this.localInformationDataSource);
 

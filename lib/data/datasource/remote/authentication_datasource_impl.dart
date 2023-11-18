@@ -1,9 +1,9 @@
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 
-import 'authentication_datasource.dart';
+import 'i_authentication_datasource.dart';
 import 'mock_api.dart';
 
-class AuthenticationDataSourceImpl implements AuthenticationDataSource {
+class AuthenticationDataSourceImpl implements IAuthenticationDataSource {
   final MockApi mockApi; // Supondo que MockApi seja a implementação da MockApi
 
   AuthenticationDataSourceImpl(this.mockApi);
