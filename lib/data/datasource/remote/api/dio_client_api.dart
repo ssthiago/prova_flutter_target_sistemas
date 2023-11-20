@@ -1,6 +1,6 @@
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 
-class ClientApi {
+class DioClientApi {
   Future<bool> authenticateUser({required User user}) async {
     // Simulação de autenticação
     await Future.delayed(const Duration(seconds: 2));
