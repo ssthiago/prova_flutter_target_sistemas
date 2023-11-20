@@ -1,11 +1,11 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:prova_flutter_target_sistemas/data/datasource/remote/authentication_datasource_impl.dart';
+import 'package:prova_flutter_target_sistemas/data/datasource/remote/client_api.dart';
 import 'package:prova_flutter_target_sistemas/data/datasource/remote/i_authentication_datasource.dart';
-import 'package:prova_flutter_target_sistemas/data/datasource/remote/mock_api.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 
-class MockApiTest extends Mock implements MockApi {}
+class MockApiTest extends Mock implements ClientApi {}
 
 void main() {
   group('AuthenticationDataSourceImpl', () {
