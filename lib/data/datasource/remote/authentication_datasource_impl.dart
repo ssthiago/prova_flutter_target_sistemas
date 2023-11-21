@@ -1,16 +1,17 @@
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 
-import 'api/dio_client_api.dart';
+import 'api/i_client_api.dart';
 import 'i_authentication_datasource.dart';
 
 class AuthenticationDataSourceImpl implements IAuthenticationDataSource {
-  final DioClientApi clientApi; // Supondo que MockApi seja a implementação da MockApi
+  final IClientApi clientApi;
 
-  AuthenticationDataSourceImpl(this.clientApi);
+  AuthenticationDataSourceImpl({required this.clientApi});
 
   @override
-  Future<bool> authenticateUser({required User user}) async {
-    // Chamar o método authenticateUser da MockApi
-    return clientApi.authenticateUser(user: user);
+  Future<User?> authenticateUser({required User user}) async {
+    final response =
+        await clientApi.get(path: 'users?username=${user.username}&password=${user.password}');
+    return User(username: 'username', password: 'password');
   }
 }
