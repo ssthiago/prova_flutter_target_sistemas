@@ -1,16 +1,26 @@
+import 'dart:convert';
+
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 
+import 'api/i_client_api.dart';
 import 'i_authentication_datasource.dart';
-import 'mock_api.dart';
 
 class AuthenticationDataSourceImpl implements IAuthenticationDataSource {
-  final MockApi mockApi; // Supondo que MockApi seja a implementação da MockApi
+  final IClientApi clientApi;
 
-  AuthenticationDataSourceImpl(this.mockApi);
+  AuthenticationDataSourceImpl({required this.clientApi});
 
   @override
-  Future<bool> authenticateUser({required User user}) async {
-    // Chamar o método authenticateUser da MockApi
-    return mockApi.authenticateUser(user: user);
+  Future<User?> authenticateUser({required User user}) async {
+    final response =
+        await clientApi.get(path: 'users?username=${user.username}&password=${user.password}');
+
+    if (response.data != null && response.data.isNotEmpty) {
+      // Se a resposta contiver dados, converte para um objeto User
+      return User.fromJson(response.data);
+    } else {
+      // Se a resposta estiver vazia ou não contiver dados válidos, retorna null
+      return null;
+    }
   }
 }

@@ -1,40 +1,60 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:prova_flutter_target_sistemas/data/datasource/remote/api/i_client_api.dart';
 import 'package:prova_flutter_target_sistemas/data/datasource/remote/authentication_datasource_impl.dart';
 import 'package:prova_flutter_target_sistemas/data/datasource/remote/i_authentication_datasource.dart';
-import 'package:prova_flutter_target_sistemas/data/datasource/remote/mock_api.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
 
-class MockApiTest extends Mock implements MockApi {}
+class MockClientApi extends Mock implements IClientApi {}
 
 void main() {
   group('AuthenticationDataSourceImpl', () {
-    late MockApiTest mockApi;
+    late MockClientApi mockDioClientApi;
     late IAuthenticationDataSource authenticationDataSource;
 
     setUp(() {
-      mockApi = MockApiTest();
-      authenticationDataSource = AuthenticationDataSourceImpl(mockApi);
+      mockDioClientApi = MockClientApi();
+      authenticationDataSource = AuthenticationDataSourceImpl(clientApi: mockDioClientApi);
     });
 
     test('should successfully authenticate user', () async {
+      // Arrange - Configura o comportamento esperado
       final user = User(username: 'correctUsername', password: 'correctPassword');
+      final path = 'users?username=${user.username}&password=${user.password}';
+      final Response<dynamic> response = Response(
+        data: user.toJson(),
+        statusCode: 200,
+        requestOptions: RequestOptions(),
+      );
 
-      when(() => mockApi.authenticateUser(user: user)).thenAnswer((_) async => true);
+      when(() => mockDioClientApi.get(path: path)).thenAnswer((_) async => response);
 
+      //Act - Executa a ação
       final result = await authenticationDataSource.authenticateUser(user: user);
 
-      expect(result, true);
+      // Assert - Verifica o resultado
+      expect(result, isA<User>());
+      verify(() => mockDioClientApi.get(path: path)).called(1);
     });
+    test('should fail to authenticate user', () async {
+      // Arrange - Configura o comportamento esperado
+      final user = User(username: 'correctUsername', password: 'correctPassword');
+      final path = 'users?username=${user.username}&password=${user.password}';
+      final Response<dynamic> response = Response(
+        data: {},
+        statusCode: 200,
+        requestOptions: RequestOptions(),
+      );
 
-    test('should fail to authenticate user with invalid credentials', () async {
-      final user = User(username: 'incorrectUsername', password: 'incorrectPassword');
+      when(() => mockDioClientApi.get(path: path)).thenAnswer((_) async => response);
 
-      when(() => mockApi.authenticateUser(user: user)).thenAnswer((_) async => false);
-
+      //Act - Executa a ação
       final result = await authenticationDataSource.authenticateUser(user: user);
 
-      expect(result, false);
+      // Assert - Verifica o resultado
+      expect(result, isNull);
+      verify(() => mockDioClientApi.get(path: path)).called(1);
     });
   });
 }

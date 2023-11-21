@@ -12,4 +12,16 @@ class Information {
 
   @override
   int get hashCode => text.hashCode;
+
+  factory Information.fromJson(Map<String, dynamic> json) {
+    return Information(
+      text: json['text'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'text': text,
+    };
+  }
 }
