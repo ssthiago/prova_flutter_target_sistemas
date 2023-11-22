@@ -5,6 +5,7 @@ import 'package:prova_flutter_target_sistemas/presentation/login/login_page.dart
 
 class AppRoutes {
   static final GoRouter router = GoRouter(
+    initialLocation: '/informations',
     routes: <RouteBase>[
       //TODO Criar splashscreen
       GoRoute(
