@@ -1,62 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prova_flutter_target_sistemas/presentation/common_widgets/rounded_button.dart';
+import 'package:prova_flutter_target_sistemas/presentation/login/login_store.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(),
-        body: Stack(
-          children: [
-            Center(
-              child: SingleChildScrollView(
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'Login',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontFamily: GoogleFonts.robotoFlex().fontFamily,
-                        fontWeight: FontWeight.w600,
+    final LoginStore loginStore = Provider.of<LoginStore>(context);
+    return Provider<LoginStore>(
+      create: (_) => LoginStore(),
+      child: GestureDetector(
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(),
+          body: Stack(
+            children: [
+              Center(
+                child: SingleChildScrollView(
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'Login',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 30,
+                          fontFamily: GoogleFonts.robotoFlex().fontFamily,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
-                    ),
-                    //TODO testar widget Gap()
-                    const SizedBox(height: 15),
-                    buildFields(),
-                  ],
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 20),
-                child: const Text(
-                  'Política de privacidade',
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: Colors.blue,
+                      //TODO testar widget Gap()
+                      const SizedBox(height: 15),
+                      buildFields(context),
+                    ],
                   ),
                 ),
               ),
-            ),
-          ],
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 20),
+                  child: const Text(
+                    'Política de privacidade',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
+    ;
   }
 
-  Widget buildFields() {
+  Widget buildFields(BuildContext context) {
     return Form(
       //key: controller.formKey,
       autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -111,7 +118,8 @@ class LoginPage extends StatelessWidget {
               enabled: true,
               isLoading: false,
               text: 'login',
-              onPress: () {},
+              onPress: () =>
+                  Provider.of<LoginStore>(context, listen: false).goToInformationPage(context),
 /*
               enabled: (!controller.loginState.isLoading),
               isLoading: (controller.loginState.isLoading),

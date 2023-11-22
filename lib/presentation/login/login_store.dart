@@ -20,9 +20,7 @@ abstract class LoginStoreBase with Store {
   void setPassword(String value) => password = value;
 
   @action
-  void goToInformationPage(BuildContext context) {
-    GoRouter.of(context).go('/information');
-  }
+  void goToInformationPage(BuildContext context) => GoRouter.of(context).go('/informations');
 }
 
 //flutter packages pub run build_runner build
