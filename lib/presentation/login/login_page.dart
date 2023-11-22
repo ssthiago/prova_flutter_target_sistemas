@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobx/mobx.dart';
+import 'package:prova_flutter_target_sistemas/core/strings_constants.dart';
+import 'package:prova_flutter_target_sistemas/core/utils/validate.dart';
 import 'package:prova_flutter_target_sistemas/presentation/common_widgets/rounded_button.dart';
 import 'package:prova_flutter_target_sistemas/presentation/login/login_store.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +41,7 @@ class LoginPage extends StatelessWidget {
                       ),
                       //TODO testar widget Gap()
                       const SizedBox(height: 15),
-                      buildFields(context),
+                      buildFields(context, loginStore),
                     ],
                   ),
                 ),
@@ -46,11 +50,15 @@ class LoginPage extends StatelessWidget {
                 alignment: Alignment.bottomCenter,
                 child: Container(
                   margin: const EdgeInsets.only(bottom: 20),
-                  child: const Text(
-                    'Política de privacidade',
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Colors.blue,
+                  child: GestureDetector(
+                    onTap: () =>
+                        loginStore.openExternalUrl(StringsConstants.urlPoliticaPrivacidade),
+                    child: const Text(
+                      StringsConstants.politicaPrivacidade,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.blue,
+                      ),
                     ),
                   ),
                 ),
@@ -63,72 +71,72 @@ class LoginPage extends StatelessWidget {
     ;
   }
 
-  Widget buildFields(BuildContext context) {
-    return Form(
-      //key: controller.formKey,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: Column(
-        children: [
-          TextFormField(
-            //controller: controller.emailFieldController,
-            //onSaved: (newValue) => controller.email = newValue,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              suffixIcon: Icon(
-                Icons.person_2_outlined,
+  Widget buildFields(BuildContext context, LoginStore loginStore) {
+    return Observer(
+      builder: (_) => Form(
+        key: loginStore.formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          children: [
+            TextFormField(
+              controller: loginStore.emailFieldController,
+              onSaved: (newValue) => loginStore.username = newValue!,
+              keyboardType: TextInputType.emailAddress,
+              decoration: const InputDecoration(
+                suffixIcon: Icon(
+                  Icons.person_2_outlined,
+                ),
+                labelText: StringsConstants.nomeUsuario,
               ),
-              labelText: 'email',
+              validator: (value) => Validate.username(value!, label: StringsConstants.nomeUsuario),
             ),
-            //validator: (value) => Validate.email(value!, label: email),
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            //controller: controller.passwordFieldController,
-            //onSaved: (newValue) => controller.password = newValue,
-            //onChanged: controller.onPasswordChanged,
-            //validator: (value) => Validate.password(value!, label: senha),
-            //obscureText: controller.isPasswordObscure,
-            decoration: InputDecoration(
-              labelText: 'senha',
-              suffixIcon: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GestureDetector(
-                    //onTap: () => controller.togglePasswordHidden(),
-                    child: const Icon(
-                      //controller.isPasswordObscure ? Icons.visibility_off : Icons.visibility,
-                      Icons.visibility,
-                      color: Colors.blue,
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: loginStore.passwordFieldController,
+              onSaved: (newValue) => loginStore.password = newValue!,
+              //onChanged: controller.onPasswordChanged,
+              validator: (value) => Validate.password(value!, label: StringsConstants.senha),
+              obscureText: loginStore.isPasswordObscure,
+              decoration: InputDecoration(
+                labelText: StringsConstants.senha,
+                suffixIcon: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    GestureDetector(
+                      onTap: () => loginStore.togglePasswordObscure(),
+                      child: Icon(
+                        loginStore.isPasswordObscure ? Icons.visibility_off : Icons.visibility,
+                        color: Colors.blue,
+                      ),
                     ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Icon(
-                    Icons.lock_outline_rounded,
-                  ),
-                  const SizedBox(width: 10),
-                ],
+                    const SizedBox(width: 10),
+                    const Icon(
+                      Icons.lock_outline_rounded,
+                    ),
+                    const SizedBox(width: 10),
+                  ],
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 50),
-          SizedBox(
-            width: double.infinity,
-            child: RoundedButton(
-              enabled: true,
-              isLoading: false,
-              text: 'login',
-              onPress: () =>
-                  Provider.of<LoginStore>(context, listen: false).goToInformationPage(context),
+            const SizedBox(height: 50),
+            SizedBox(
+              width: double.infinity,
+              child: RoundedButton(
+                enabled: true,
+                isLoading: false,
+                text: 'login',
+                onPress: () => loginStore.login(context),
 /*
               enabled: (!controller.loginState.isLoading),
               isLoading: (controller.loginState.isLoading),
               text: login,
               onPress: () => controller.login(),
 */
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

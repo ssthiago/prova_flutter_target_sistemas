@@ -41,6 +41,30 @@ mixin _$LoginStore on LoginStoreBase, Store {
     });
   }
 
+  late final _$isPasswordObscureAtom =
+      Atom(name: 'LoginStoreBase.isPasswordObscure', context: context);
+
+  @override
+  bool get isPasswordObscure {
+    _$isPasswordObscureAtom.reportRead();
+    return super.isPasswordObscure;
+  }
+
+  @override
+  set isPasswordObscure(bool value) {
+    _$isPasswordObscureAtom.reportWrite(value, super.isPasswordObscure, () {
+      super.isPasswordObscure = value;
+    });
+  }
+
+  late final _$loginAsyncAction =
+      AsyncAction('LoginStoreBase.login', context: context);
+
+  @override
+  Future<void> login(BuildContext context) {
+    return _$loginAsyncAction.run(() => super.login(context));
+  }
+
   late final _$LoginStoreBaseActionController =
       ActionController(name: 'LoginStoreBase', context: context);
 
@@ -67,11 +91,11 @@ mixin _$LoginStore on LoginStoreBase, Store {
   }
 
   @override
-  void goToInformationPage(BuildContext context) {
+  void togglePasswordObscure() {
     final _$actionInfo = _$LoginStoreBaseActionController.startAction(
-        name: 'LoginStoreBase.goToInformationPage');
+        name: 'LoginStoreBase.togglePasswordObscure');
     try {
-      return super.goToInformationPage(context);
+      return super.togglePasswordObscure();
     } finally {
       _$LoginStoreBaseActionController.endAction(_$actionInfo);
     }
@@ -81,7 +105,8 @@ mixin _$LoginStore on LoginStoreBase, Store {
   String toString() {
     return '''
 username: ${username},
-password: ${password}
+password: ${password},
+isPasswordObscure: ${isPasswordObscure}
     ''';
   }
 }
