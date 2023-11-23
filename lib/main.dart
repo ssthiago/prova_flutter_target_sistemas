@@ -11,6 +11,7 @@ import 'data/datasource/remote/api/i_client_api.dart';
 import 'data/datasource/remote/authentication_datasource_impl.dart';
 import 'data/datasource/remote/i_authentication_datasource.dart';
 import 'domian/repositories/i_authentication_repository.dart';
+import 'presentation/common_widgets/bottom_sheet/bottom_sheet_store.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,12 +27,14 @@ void main() {
     return clientApi;
   });
 
+  getIt.registerSingleton<BottomSheetStore>(BottomSheetStore());
   getIt.registerSingleton<IAuthenticationDataSource>(
       AuthenticationDataSourceImpl(clientApi: getIt.get<IClientApi>()));
   getIt.registerSingleton<IAuthenticationRepository>(
       AuthenticationRepositoryImpl(getIt.get<IAuthenticationDataSource>()));
   getIt.registerSingleton<LoginUseCase>(LoginUseCase(getIt.get<IAuthenticationRepository>()));
-  getIt.registerSingleton<LoginStore>(LoginStore(loginUseCase: getIt.get<LoginUseCase>()));
+  getIt.registerSingleton<LoginStore>(LoginStore(
+      loginUseCase: getIt.get<LoginUseCase>(), bottomSheetStore: getIt.get<BottomSheetStore>()));
 
   runApp(MyApp());
 }

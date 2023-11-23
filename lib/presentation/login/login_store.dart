@@ -6,6 +6,7 @@ import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/log
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_failure.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_params.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_success.dart';
+import 'package:prova_flutter_target_sistemas/presentation/common_widgets/bottom_sheet/bottom_sheet_store.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'login_store.g.dart';
@@ -14,8 +15,9 @@ class LoginStore = LoginStoreBase with _$LoginStore;
 
 abstract class LoginStoreBase with Store {
   final LoginUseCase loginUseCase;
+  final BottomSheetStore bottomSheetStore;
 
-  LoginStoreBase({required this.loginUseCase});
+  LoginStoreBase({required this.loginUseCase, required this.bottomSheetStore});
 
   @observable
   String username = '';
@@ -40,8 +42,10 @@ abstract class LoginStoreBase with Store {
 
   @action
   Future<void> login(BuildContext context) async {
+    bottomSheetStore.hideBottomSheet();
     final bool isValid = formKey.currentState!.validate();
     if (!isValid) {
+      bottomSheetStore.hideBottomSheet();
       return;
     }
     formKey.currentState!.save();
@@ -54,7 +58,8 @@ abstract class LoginStoreBase with Store {
       _goToInformationPage(context);
     }
     if (result is LoginFailure) {
-      print(result.message);
+      bottomSheetStore.setErrorMessage(result.message ?? '');
+      bottomSheetStore.showBottomSheet();
     }
   }
 

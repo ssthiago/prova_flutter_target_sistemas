@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
 import 'package:prova_flutter_target_sistemas/core/strings_constants.dart';
 import 'package:prova_flutter_target_sistemas/core/utils/validate.dart';
+import 'package:prova_flutter_target_sistemas/presentation/common_widgets/bottom_sheet/bottom_sheet_widget.dart';
 import 'package:prova_flutter_target_sistemas/presentation/common_widgets/rounded_button.dart';
 import 'package:prova_flutter_target_sistemas/presentation/login/login_store.dart';
 
@@ -71,7 +72,15 @@ class LoginFields extends StatelessWidget {
                 enabled: true,
                 isLoading: false,
                 text: 'login',
-                onPress: () => loginStore.login(context),
+                onPress: () {
+                  loginStore.login(context).then((value) {
+                    if (loginStore.bottomSheetStore.isBottomSheetVisible) {
+                      showCustomBottomSheet(context);
+                    }
+                  });
+
+                  //loginStore.showCustomBottomSheet();
+                },
               ),
             ),
           ],
