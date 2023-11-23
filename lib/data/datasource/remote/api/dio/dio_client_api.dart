@@ -8,7 +8,7 @@ class DioClientApi implements IClientApi {
   String baseUrl;
   final Dio dio = Dio();
 
-  DioClientApi({required this.baseUrl});
+  DioClientApi({this.baseUrl = 'https://6556715f84b36e3a431fc30c.mockapi.io/api/v1/'});
 
   void init() {
     dio.options.baseUrl = baseUrl;

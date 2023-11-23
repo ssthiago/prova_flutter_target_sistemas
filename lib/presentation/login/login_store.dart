@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/login_usecase.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'login_store.g.dart';
@@ -8,6 +9,10 @@ part 'login_store.g.dart';
 class LoginStore = LoginStoreBase with _$LoginStore;
 
 abstract class LoginStoreBase with Store {
+  final LoginUseCase loginUseCase;
+
+  LoginStoreBase({required this.loginUseCase});
+
   @observable
   String username = '';
 
