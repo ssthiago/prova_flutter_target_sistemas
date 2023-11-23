@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
+import 'package:prova_flutter_target_sistemas/domian/result/result.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/login_usecase.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_failure.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_params.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_success.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'login_store.g.dart';
@@ -22,7 +26,7 @@ abstract class LoginStoreBase with Store {
   @observable
   bool isPasswordObscure = true;
 
-  TextEditingController emailFieldController = TextEditingController();
+  TextEditingController usernameFieldController = TextEditingController();
 
   TextEditingController passwordFieldController = TextEditingController();
 
@@ -42,8 +46,16 @@ abstract class LoginStoreBase with Store {
     }
     formKey.currentState!.save();
 
-    // redirecionar para a de informations
-    _goToInformationPage(context);
+    Result result = await loginUseCase(LoginParams(
+        username: usernameFieldController.text, password: passwordFieldController.text));
+
+    if (result is LoginSuccess) {
+      // redirecionar para a de informations
+      _goToInformationPage(context);
+    }
+    if (result is LoginFailure) {
+      print(result.message);
+    }
   }
 
   @action

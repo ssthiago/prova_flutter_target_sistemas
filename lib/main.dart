@@ -18,7 +18,14 @@ void main() {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   GetIt getIt = GetIt.I;
-  getIt.registerSingleton<IClientApi>(DioClientApi());
+
+  //registra e inicializa o DioCLientApi
+  GetIt.instance.registerLazySingleton<IClientApi>(() {
+    DioClientApi clientApi = DioClientApi();
+    clientApi.init();
+    return clientApi;
+  });
+
   getIt.registerSingleton<IAuthenticationDataSource>(
       AuthenticationDataSourceImpl(clientApi: getIt.get<IClientApi>()));
   getIt.registerSingleton<IAuthenticationRepository>(

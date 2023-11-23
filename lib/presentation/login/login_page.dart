@@ -75,7 +75,7 @@ class LoginPage extends StatelessWidget {
         child: Column(
           children: [
             TextFormField(
-              controller: _loginStore.emailFieldController,
+              controller: _loginStore.usernameFieldController,
               onSaved: (newValue) => _loginStore.username = newValue!,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
