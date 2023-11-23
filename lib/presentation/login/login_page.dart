@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:prova_flutter_target_sistemas/core/strings_constants.dart';
 import 'package:prova_flutter_target_sistemas/core/utils/validate.dart';
@@ -12,7 +13,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //final LoginStore loginStore = Provider.of<LoginStore>(context);
+    final LoginStore _loginStore = GetIt.I.get<LoginStore>();
     return GestureDetector(
       onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
@@ -47,9 +48,7 @@ class LoginPage extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 child: GestureDetector(
-                  onTap: () => context
-                      .read<LoginStore>()
-                      .openExternalUrl(StringsConstants.urlPoliticaPrivacidade),
+                  onTap: () => _loginStore.openExternalUrl(StringsConstants.urlPoliticaPrivacidade),
                   child: const Text(
                     StringsConstants.politicaPrivacidade,
                     style: TextStyle(
@@ -67,15 +66,17 @@ class LoginPage extends StatelessWidget {
   }
 
   Widget buildFields(BuildContext context) {
+    final LoginStore _loginStore = GetIt.I.get<LoginStore>();
+
     return Observer(
       builder: (_) => Form(
-        key: context.read<LoginStore>().formKey,
+        key: _loginStore.formKey,
         autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
             TextFormField(
-              controller: context.read<LoginStore>().emailFieldController,
-              onSaved: (newValue) => context.read<LoginStore>().username = newValue!,
+              controller: _loginStore.emailFieldController,
+              onSaved: (newValue) => _loginStore.username = newValue!,
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 suffixIcon: Icon(
@@ -87,10 +88,10 @@ class LoginPage extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             TextFormField(
-              controller: context.read<LoginStore>().passwordFieldController,
-              onSaved: (newValue) => context.read<LoginStore>().password = newValue!,
+              controller: _loginStore.passwordFieldController,
+              onSaved: (newValue) => _loginStore.password = newValue!,
               validator: (value) => Validate.password(value!, label: StringsConstants.senha),
-              obscureText: context.read<LoginStore>().isPasswordObscure,
+              obscureText: _loginStore.isPasswordObscure,
               decoration: InputDecoration(
                 labelText: StringsConstants.senha,
                 suffixIcon: Row(
@@ -98,11 +99,9 @@ class LoginPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     GestureDetector(
-                      onTap: () => context.read<LoginStore>().togglePasswordObscure(),
+                      onTap: () => _loginStore.togglePasswordObscure(),
                       child: Icon(
-                        context.read<LoginStore>().isPasswordObscure
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                        _loginStore.isPasswordObscure ? Icons.visibility_off : Icons.visibility,
                         color: Colors.blue,
                       ),
                     ),
@@ -122,7 +121,7 @@ class LoginPage extends StatelessWidget {
                 enabled: true,
                 isLoading: false,
                 text: 'login',
-                onPress: () => context.read<LoginStore>().login(context),
+                onPress: () => _loginStore.login(context),
               ),
             ),
           ],
