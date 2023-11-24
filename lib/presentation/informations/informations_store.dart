@@ -30,13 +30,16 @@ abstract class InformationsStoreBase with Store {
 
   @action
   Future<void> addInformation() async {
-    if (formKey.currentState?.validate() ?? false) {
-      final UserSession userSession = await userSessionManager.getAuthenticatedUser();
-      final newInformation = Information(text: text /*, timestamp: DateTime.now()*/);
-      await informationManager.addInformation(userSession.user.id!, newInformation);
-      text = ''; // Limpa o campo de texto após adicionar a informação
-      textFieldController.text = '';
+    final bool isValid = formKey.currentState!.validate();
+    if (!isValid) {
+      return;
     }
+    final UserSession userSession = await userSessionManager.getAuthenticatedUser();
+    final newInformation =
+        Information(text: textFieldController.text /*, timestamp: DateTime.now()*/);
+    await informationManager.addInformation(userSession.user.id!, newInformation);
+    text = ''; // Limpa o campo de texto após adicionar a informação
+    textFieldController.text = '';
   }
 
   @action

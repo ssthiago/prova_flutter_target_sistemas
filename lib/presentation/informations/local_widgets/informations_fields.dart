@@ -20,57 +20,61 @@ class InformationsFields extends StatelessWidget {
     final InformationsStore informationsStore = GetIt.I.get<InformationsStore>();
 
     return Observer(
-      builder: (_) => Column(
-        children: [
-          TextFormField(
-            controller: informationsStore.textFieldController,
-            onSaved: (newValue) => informationsStore.text = newValue!,
-            keyboardType: TextInputType.text,
-            decoration: InputDecoration(
-              suffixIcon: GestureDetector(
-                onTap: () => informationsStore.addInformation(),
-                child: const Icon(
-                  Icons.send,
-                ),
-              ),
-              labelText: StringsConstants.digiteSeuTexto,
-            ),
-            validator: (value) =>
-                Validate.textInformacao(value!, label: StringsConstants.informacao),
-          ),
-          const SizedBox(height: 16.0),
-          Observer(
-            builder: (_) => Column(
-              children: informationsStore.infoList.map((info) {
-                return Card(
-                  child: ListTile(
-                    title: Text(info.text),
-                    // Adicione botões de edição/exclusão conforme necessário
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          icon: const Icon(Icons.edit),
-                          onPressed: () {
-                            // Lógica para editar a informação
-                            // Você pode exibir um modal de edição ou navegar para uma nova tela de edição
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.delete),
-                          onPressed: () {
-                            // Lógica para excluir a informação
-                            // informationsStore.removeInformation(info);
-                          },
-                        ),
-                      ],
-                    ),
+      builder: (_) => Form(
+        key: informationsStore.formKey,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        child: Column(
+          children: [
+            TextFormField(
+              controller: informationsStore.textFieldController,
+              onSaved: (newValue) => informationsStore.text = newValue!,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                suffixIcon: GestureDetector(
+                  onTap: () => informationsStore.addInformation(),
+                  child: const Icon(
+                    Icons.send,
                   ),
-                );
-              }).toList(),
+                ),
+                labelText: StringsConstants.digiteSeuTexto,
+              ),
+              validator: (value) =>
+                  Validate.textInformacao(value!, label: StringsConstants.informacao),
             ),
-          ),
-        ],
+            const SizedBox(height: 16.0),
+            Observer(
+              builder: (_) => Column(
+                children: informationsStore.infoList.map((info) {
+                  return Card(
+                    child: ListTile(
+                      title: Text(info.text),
+                      // Adicione botões de edição/exclusão conforme necessário
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Icons.edit),
+                            onPressed: () {
+                              // Lógica para editar a informação
+                              // Você pode exibir um modal de edição ou navegar para uma nova tela de edição
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.delete),
+                            onPressed: () {
+                              // Lógica para excluir a informação
+                              // informationsStore.removeInformation(info);
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
