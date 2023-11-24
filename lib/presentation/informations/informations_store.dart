@@ -19,6 +19,9 @@ abstract class InformationsStoreBase with Store {
   @action
   void setText(String value) => text = value;
 
+  @action
+  void addInformation() {}
+
   void _goToInformationPage(BuildContext context) => GoRouter.of(context).go('/informations');
 
   Future<void> openExternalUrl(String url) async {

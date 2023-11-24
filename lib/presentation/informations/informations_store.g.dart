@@ -40,6 +40,17 @@ mixin _$InformationsStore on InformationsStoreBase, Store {
   }
 
   @override
+  void addInformation() {
+    final _$actionInfo = _$InformationsStoreBaseActionController.startAction(
+        name: 'InformationsStoreBase.addInformation');
+    try {
+      return super.addInformation();
+    } finally {
+      _$InformationsStoreBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 text: ${text}

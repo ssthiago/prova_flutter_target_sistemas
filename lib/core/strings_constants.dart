@@ -7,6 +7,9 @@ class StringsConstants {
   static const String proibidoCaracteresEspeciais = 'não pode conter caracteres especiais';
   static const String espacoBrancoFinal = 'não pode conter espaço em branco no final';
   static const String nomeUsuario = 'Nome de usuário';
+  static const String digiteSeuTexto = 'Digite seu texto';
+  static const String informacao = 'Informação';
+  static const String informacoes = 'Informações';
   static const String senha = 'Senha';
   static const String politicaPrivacidade = 'Política de Privacidade';
   static const String urlPoliticaPrivacidade = 'http://google.com.br';

@@ -1,6 +1,15 @@
 import 'package:prova_flutter_target_sistemas/core/strings_constants.dart';
 
 abstract class Validate {
+  static String? textInformacao(String value, {required String label}) {
+    String? haveMinCharacters = _haveMinCharacters(value, label: label);
+    if (haveMinCharacters != null) return haveMinCharacters;
+    String? haveEmptyCharactersResult = _haveEmptyCharacters(value, label: label);
+    if (haveEmptyCharactersResult != null) return haveEmptyCharactersResult;
+
+    return null;
+  }
+
   static String? username(String value, {required String label}) {
     String? haveEmptyCharactersResult = _haveEmptyCharacters(value, label: label);
     if (haveEmptyCharactersResult != null) return haveEmptyCharactersResult;

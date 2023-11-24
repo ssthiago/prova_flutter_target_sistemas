@@ -9,6 +9,7 @@ import 'package:prova_flutter_target_sistemas/data/services/authenticated/user_s
 import 'package:prova_flutter_target_sistemas/domian/repositories/i_authentication_repository.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/login_usecase.dart';
 import 'package:prova_flutter_target_sistemas/presentation/common_widgets/bottom_sheet/bottom_sheet_store.dart';
+import 'package:prova_flutter_target_sistemas/presentation/informations/informations_store.dart';
 import 'package:prova_flutter_target_sistemas/presentation/login/login_store.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,5 +39,7 @@ class Services {
     );
     getIt.registerSingleton<LoginStore>(LoginStore(
         loginUseCase: getIt.get<LoginUseCase>(), bottomSheetStore: getIt.get<BottomSheetStore>()));
+
+    getIt.registerSingleton<InformationsStore>(InformationsStore());
   }
 }
