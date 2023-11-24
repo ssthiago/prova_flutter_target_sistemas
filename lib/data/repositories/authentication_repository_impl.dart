@@ -8,6 +8,6 @@ class AuthenticationRepositoryImpl implements IAuthenticationRepository {
   AuthenticationRepositoryImpl(this.authenticationDataSource);
 
   @override
-  Future<User?> authenticateUser({required User user}) async =>
-      await authenticationDataSource.authenticateUser(user: user);
+  Future<User?> authenticateUser({required String username, required String password}) async =>
+      await authenticationDataSource.authenticateUser(username: username, password: password);
 }

@@ -7,6 +7,7 @@ import 'i_user_session_manager.dart';
 
 class UserSessionManager implements IUserSessionManager {
   static const String _sessionKey = 'user_sessions';
+  // TODO Trocar por flutter_segure_storage
   final SharedPreferences sharedPreferences;
 
   UserSessionManager(this.sharedPreferences);

@@ -18,8 +18,8 @@ class LoginUseCase implements IUseCase<LoginParams, Result> {
   @override
   Future<Result> call(LoginParams params) async {
     try {
-      User? authenticatedUser = await repository.authenticateUser(
-          user: User(username: params.username, password: params.password));
+      User? authenticatedUser =
+          await repository.authenticateUser(username: params.username, password: params.password);
 
       if (authenticatedUser != null) {
         await sessionManager.addSession(

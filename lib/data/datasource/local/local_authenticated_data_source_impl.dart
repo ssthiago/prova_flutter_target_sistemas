@@ -35,11 +35,14 @@ class LocalInformationDataSourceImpl implements ILocalAuthenticatedDataSource {
   @override
   Future<User?> getAuthenticatedUser() async {
     // Lógica para salvar informações de autenticação
+/*
     String? username = sharedPreferences.getString(AppConstants.usernameKey);
     String? password = sharedPreferences.getString(AppConstants.passwordKey);
     return username != null && password != null
         ? User(username: username, password: password)
         : null;
+*/
+    return null;
   }
 
   @override

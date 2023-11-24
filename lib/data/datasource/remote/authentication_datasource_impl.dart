@@ -12,9 +12,9 @@ class AuthenticationDataSourceImpl implements IAuthenticationDataSource {
   AuthenticationDataSourceImpl({required this.clientApi});
 
   @override
-  Future<User?> authenticateUser({required User user}) async {
+  Future<User?> authenticateUser({required String username, required String password}) async {
     final Response response =
-        await clientApi.get(path: 'users?username=${user.username}&password=${user.password}');
+        await clientApi.get(path: 'users?username=$username&password=$password');
 
     if (response.data != null && response.data.isNotEmpty) {
       // Se a resposta contiver dados, converte para um objeto User
