@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InformationManager {
+class InformationsManager {
   static const String _infoKey = 'info_map';
+  final SharedPreferences sharedPreferences;
+
+  InformationsManager(this.sharedPreferences);
 
   // Carrega o mapa de informações armazenadas no SharedPreferences
   Future<Map<String, List<Information>>> getInformationMap() async {
-    final prefs = await SharedPreferences.getInstance();
-    final infoJson = prefs.getString(_infoKey);
+    final infoJson = sharedPreferences.getString(_infoKey);
     if (infoJson != null) {
       final Map<String, dynamic> infoMap = json.decode(infoJson);
       return infoMap.map((key, value) {
@@ -21,7 +23,6 @@ class InformationManager {
 
   // Adiciona uma nova informação ao mapa associada ao usuário
   Future<void> addInformation(String userId, Information information) async {
-    final prefs = await SharedPreferences.getInstance();
     final Map<String, List<Information>> currentMap = await getInformationMap();
 
     if (!currentMap.containsKey(userId)) {
@@ -31,7 +32,7 @@ class InformationManager {
     currentMap[userId]?.add(information);
 
     // Salva o mapa atualizado no SharedPreferences
-    await prefs.setString(
+    await sharedPreferences.setString(
         _infoKey,
         json.encode(currentMap
             .map((key, value) => MapEntry(key, value.map((info) => info.toJson()).toList()))));
@@ -39,7 +40,6 @@ class InformationManager {
 
   // Edita uma informação no mapa associada ao usuário
   Future<void> editInformation(String userId, int index, Information newInformation) async {
-    final prefs = await SharedPreferences.getInstance();
     final Map<String, List<Information>> currentMap = await getInformationMap();
 
     if (currentMap.containsKey(userId) && index >= 0 && index < currentMap[userId]!.length) {
@@ -47,7 +47,7 @@ class InformationManager {
     }
 
     // Salva o mapa atualizado no SharedPreferences
-    await prefs.setString(
+    await sharedPreferences.setString(
         _infoKey,
         json.encode(currentMap
             .map((key, value) => MapEntry(key, value.map((info) => info.toJson()).toList()))));
@@ -55,7 +55,6 @@ class InformationManager {
 
   // Remove uma informação do mapa associada ao usuário
   Future<void> removeInformation(String userId, int index) async {
-    final prefs = await SharedPreferences.getInstance();
     final Map<String, List<Information>> currentMap = await getInformationMap();
 
     if (currentMap.containsKey(userId) && index >= 0 && index < currentMap[userId]!.length) {
@@ -63,7 +62,7 @@ class InformationManager {
     }
 
     // Salva o mapa atualizado no SharedPreferences
-    await prefs.setString(
+    await sharedPreferences.setString(
         _infoKey,
         json.encode(currentMap
             .map((key, value) => MapEntry(key, value.map((info) => info.toJson()).toList()))));
