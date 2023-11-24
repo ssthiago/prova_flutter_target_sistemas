@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:prova_flutter_target_sistemas/routes/app_routes.dart';
 
-import 'presentation/login/login_page.dart';
+import 'core/services/services.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(const MyApp());
+
+  await Services.init();
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
+      routerConfig: AppRoutes.router,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'Prova Flutter Target Sistemas',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: LoginPage(),
+      //home: LoginPage(),
     );
   }
 }

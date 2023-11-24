@@ -20,7 +20,7 @@ void main() {
 
     test('should successfully authenticate user', () async {
       // Arrange - Configura o comportamento esperado
-      final user = User(username: 'correctUsername', password: 'correctPassword');
+      final user = User(username: 'correctUsername', password: 'correctPassword', name: 'Thiago');
       final path = 'users?username=${user.username}&password=${user.password}';
       final Response<dynamic> response = Response(
         data: user.toJson(),
@@ -31,7 +31,8 @@ void main() {
       when(() => mockDioClientApi.get(path: path)).thenAnswer((_) async => response);
 
       //Act - Executa a ação
-      final result = await authenticationDataSource.authenticateUser(user: user);
+      final result = await authenticationDataSource.authenticateUser(
+          username: user.username, password: user.password);
 
       // Assert - Verifica o resultado
       expect(result, isA<User>());
@@ -39,7 +40,7 @@ void main() {
     });
     test('should fail to authenticate user', () async {
       // Arrange - Configura o comportamento esperado
-      final user = User(username: 'correctUsername', password: 'correctPassword');
+      final user = User(username: 'correctUsername', password: 'correctPassword', name: 'Thiago');
       final path = 'users?username=${user.username}&password=${user.password}';
       final Response<dynamic> response = Response(
         data: {},
@@ -50,7 +51,8 @@ void main() {
       when(() => mockDioClientApi.get(path: path)).thenAnswer((_) async => response);
 
       //Act - Executa a ação
-      final result = await authenticationDataSource.authenticateUser(user: user);
+      final result = await authenticationDataSource.authenticateUser(
+          username: user.username, password: user.password);
 
       // Assert - Verifica o resultado
       expect(result, isNull);

@@ -96,7 +96,8 @@ void main() {
       });
 
       test('should save authenticated user to shared preferences', () async {
-        final authenticatedUser = User(username: 'username', password: 'password');
+        final authenticatedUser =
+            User(id: '1', name: 'Thiago', username: 'username', password: 'password');
         // Configuração do mock para SharedPreferences
         when(() => mockSharedPreferences.setString(
                 AppConstants.usernameKey, authenticatedUser.username))

@@ -8,10 +8,6 @@ class AuthenticationRepositoryImpl implements IAuthenticationRepository {
   AuthenticationRepositoryImpl(this.authenticationDataSource);
 
   @override
-  Future<bool> authenticateUser({required User user}) async {
-    // Implementação da autenticação utilizando localDataSource
-    //return await authenticationDataSource.authenticateUser(user:UserModel.fromEntity(user));
-    //return await authenticationDataSource.authenticateUser(user: user);
-    return true;
-  }
+  Future<User?> authenticateUser({required String username, required String password}) async =>
+      await authenticationDataSource.authenticateUser(username: username, password: password);
 }
