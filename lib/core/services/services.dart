@@ -6,6 +6,7 @@ import 'package:prova_flutter_target_sistemas/data/datasource/remote/i_authentic
 import 'package:prova_flutter_target_sistemas/data/repositories/authentication_repository_impl.dart';
 import 'package:prova_flutter_target_sistemas/data/services/authenticated/i_user_session_manager.dart';
 import 'package:prova_flutter_target_sistemas/data/services/authenticated/user_session_manager.dart';
+import 'package:prova_flutter_target_sistemas/data/services/information/i_information_manager.dart';
 import 'package:prova_flutter_target_sistemas/data/services/information/information_manager.dart';
 import 'package:prova_flutter_target_sistemas/domian/repositories/i_authentication_repository.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/login_usecase.dart';
@@ -41,8 +42,13 @@ class Services {
     getIt.registerSingleton<LoginStore>(LoginStore(
         loginUseCase: getIt.get<LoginUseCase>(), bottomSheetStore: getIt.get<BottomSheetStore>()));
 
-    getIt.registerSingleton<InformationsManager>(
+    getIt.registerSingleton<IInformationsManager>(
         InformationsManager(getIt.get<SharedPreferences>()));
-    getIt.registerSingleton<InformationsStore>(InformationsStore(getIt.get<InformationsManager>()));
+    getIt.registerSingleton<InformationsStore>(
+      InformationsStore(
+        informationManager: getIt.get<IInformationsManager>(),
+        userSessionManager: getIt.get<IUserSessionManager>(),
+      ),
+    );
   }
 }

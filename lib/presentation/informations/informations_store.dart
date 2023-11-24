@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:prova_flutter_target_sistemas/data/services/information/information_manager.dart';
+import 'package:prova_flutter_target_sistemas/data/services/authenticated/i_user_session_manager.dart';
+import 'package:prova_flutter_target_sistemas/data/services/information/i_information_manager.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
+import 'package:prova_flutter_target_sistemas/domian/entities/user_session.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'informations_store.g.dart';
@@ -9,9 +11,11 @@ part 'informations_store.g.dart';
 class InformationsStore = InformationsStoreBase with _$InformationsStore;
 
 abstract class InformationsStoreBase with Store {
-  final InformationsManager informationManager;
+  final IInformationsManager informationManager;
+  final IUserSessionManager userSessionManager;
 
-  InformationsStoreBase(this.informationManager);
+  InformationsStoreBase({required this.userSessionManager, required this.informationManager});
+
   @observable
   String text = '';
 
@@ -27,29 +31,30 @@ abstract class InformationsStoreBase with Store {
   @action
   Future<void> addInformation() async {
     if (formKey.currentState?.validate() ?? false) {
-      final userId = '123'; // Substitua isso pela lógica para obter o ID do usuário autenticado
+      final UserSession userSession = await userSessionManager.getAuthenticatedUser();
       final newInformation = Information(text: text /*, timestamp: DateTime.now()*/);
-      await informationManager.addInformation(userId, newInformation);
+      await informationManager.addInformation(userSession.user.id!, newInformation);
       text = ''; // Limpa o campo de texto após adicionar a informação
+      textFieldController.text = '';
     }
   }
 
   @action
   Future<void> editInformation(Information oldInformation, Information newInformation) async {
-    final userId = '123'; // Substitua isso pela lógica para obter o ID do usuário autenticado
+    final UserSession userSession = await userSessionManager.getAuthenticatedUser();
     final index = infoList.indexWhere((info) => info == oldInformation);
 
     if (index != -1) {
       infoList[index] = newInformation;
-      await informationManager.addInformation(userId, newInformation);
+      await informationManager.addInformation(userSession.user.id!, newInformation);
     }
   }
 
   @action
   Future<void> removeInformation(Information information, int index) async {
-    final userId = '123'; // Substitua isso pela lógica para obter o ID do usuário autenticado
+    final UserSession userSession = await userSessionManager.getAuthenticatedUser();
     infoList.remove(information);
-    await informationManager.removeInformation(userId, index);
+    await informationManager.removeInformation(userSession.user.id!, index);
   }
 
   Future<void> openExternalUrl(String url) async {

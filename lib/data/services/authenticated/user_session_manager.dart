@@ -46,4 +46,14 @@ class UserSessionManager implements IUserSessionManager {
     }
     return {};
   }
+
+  @override
+  Future<UserSession> getAuthenticatedUser() async {
+    final sessions = await getSessions();
+
+    final authenticatedSession =
+        sessions.values.firstWhere((userSession) => userSession.isAuthenticated == true);
+
+    return authenticatedSession;
+  }
 }

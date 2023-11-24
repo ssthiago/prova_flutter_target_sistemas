@@ -2,13 +2,16 @@ import 'dart:convert';
 import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class InformationsManager {
+import 'i_information_manager.dart';
+
+class InformationsManager implements IInformationsManager {
   static const String _infoKey = 'info_map';
   final SharedPreferences sharedPreferences;
 
   InformationsManager(this.sharedPreferences);
 
   // Carrega o mapa de informações armazenadas no SharedPreferences
+  @override
   Future<Map<String, List<Information>>> getInformationMap() async {
     final infoJson = sharedPreferences.getString(_infoKey);
     if (infoJson != null) {
@@ -22,6 +25,7 @@ class InformationsManager {
   }
 
   // Adiciona uma nova informação ao mapa associada ao usuário
+  @override
   Future<void> addInformation(String userId, Information information) async {
     final Map<String, List<Information>> currentMap = await getInformationMap();
 
@@ -39,6 +43,7 @@ class InformationsManager {
   }
 
   // Edita uma informação no mapa associada ao usuário
+  @override
   Future<void> editInformation(String userId, int index, Information newInformation) async {
     final Map<String, List<Information>> currentMap = await getInformationMap();
 
@@ -54,6 +59,7 @@ class InformationsManager {
   }
 
   // Remove uma informação do mapa associada ao usuário
+  @override
   Future<void> removeInformation(String userId, int index) async {
     final Map<String, List<Information>> currentMap = await getInformationMap();
 
