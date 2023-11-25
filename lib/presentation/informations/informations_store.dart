@@ -5,6 +5,8 @@ import 'package:prova_flutter_target_sistemas/data/services/authenticated/i_user
 import 'package:prova_flutter_target_sistemas/data/services/information/i_information_manager.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user_session.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/logout/logout_usecase.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/logout/result/logout_success.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 part 'informations_store.g.dart';
@@ -14,8 +16,13 @@ class InformationsStore = InformationsStoreBase with _$InformationsStore;
 abstract class InformationsStoreBase with Store {
   final IInformationsManager informationManager;
   final IUserSessionManager userSessionManager;
+  final LogoutUseCase logoutUseCase;
 
-  InformationsStoreBase({required this.userSessionManager, required this.informationManager});
+  InformationsStoreBase({
+    required this.userSessionManager,
+    required this.informationManager,
+    required this.logoutUseCase,
+  });
 
   @observable
   String text = '';
@@ -37,10 +44,17 @@ abstract class InformationsStoreBase with Store {
 
   @action
   Future<void> logout(BuildContext context) async {
+    await logoutUseCase().then((result) {
+      if (result is LogoutSuccess) {
+        GoRouter.of(context).pushReplacement('/');
+      }
+    });
+/*
     final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
     await userSessionManager.removeSession(userSession!.user.id!).then(
           (value) => GoRouter.of(context).pushReplacement('/'),
         );
+*/
   }
 
   @action

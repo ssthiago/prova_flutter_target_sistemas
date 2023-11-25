@@ -10,6 +10,7 @@ import 'package:prova_flutter_target_sistemas/data/services/information/i_inform
 import 'package:prova_flutter_target_sistemas/data/services/information/information_manager.dart';
 import 'package:prova_flutter_target_sistemas/domian/repositories/i_authentication_repository.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/login_usecase.dart';
+import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/logout/logout_usecase.dart';
 import 'package:prova_flutter_target_sistemas/presentation/common_widgets/bottom_sheet/bottom_sheet_store.dart';
 import 'package:prova_flutter_target_sistemas/presentation/informations/informations_store.dart';
 import 'package:prova_flutter_target_sistemas/presentation/login/login_store.dart';
@@ -44,10 +45,12 @@ class Services {
 
     getIt.registerSingleton<IInformationsManager>(
         InformationsManager(getIt.get<SharedPreferences>()));
+    getIt.registerSingleton<LogoutUseCase>(LogoutUseCase(getIt.get<IUserSessionManager>()));
     getIt.registerSingleton<InformationsStore>(
       InformationsStore(
         informationManager: getIt.get<IInformationsManager>(),
         userSessionManager: getIt.get<IUserSessionManager>(),
+        logoutUseCase: getIt.get<LogoutUseCase>(),
       ),
     );
   }

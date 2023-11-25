@@ -1,9 +1,9 @@
 import 'package:prova_flutter_target_sistemas/data/services/authenticated/i_user_session_manager.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user_session.dart';
 import 'package:prova_flutter_target_sistemas/domian/result/result.dart';
-import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/logout/result/logout_failure.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/i_usecase_no_params.dart';
 
+import 'result/logout_failure.dart';
 import 'result/logout_success.dart';
 
 class LogoutUseCase implements IUseCaseNoParams<Result> {
