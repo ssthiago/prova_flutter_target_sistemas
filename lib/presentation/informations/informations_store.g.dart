@@ -9,6 +9,21 @@ part of 'informations_store.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic, no_leading_underscores_for_local_identifiers
 
 mixin _$InformationsStore on InformationsStoreBase, Store {
+  Computed<Future<String>>? _$loggedInUserNameComputed;
+
+  @override
+  Future<String> get loggedInUserName => (_$loggedInUserNameComputed ??=
+          Computed<Future<String>>(() => super.loggedInUserName,
+              name: 'InformationsStoreBase.loggedInUserName'))
+      .value;
+  Computed<Future<ObservableList<Information>>>? _$infoListComputed;
+
+  @override
+  Future<ObservableList<Information>> get infoList => (_$infoListComputed ??=
+          Computed<Future<ObservableList<Information>>>(() => super.infoList,
+              name: 'InformationsStoreBase.infoList'))
+      .value;
+
   late final _$textAtom =
       Atom(name: 'InformationsStoreBase.text', context: context);
 
@@ -25,20 +40,12 @@ mixin _$InformationsStore on InformationsStoreBase, Store {
     });
   }
 
-  late final _$infoListAtom =
-      Atom(name: 'InformationsStoreBase.infoList', context: context);
+  late final _$logoutAsyncAction =
+      AsyncAction('InformationsStoreBase.logout', context: context);
 
   @override
-  ObservableList<Information> get infoList {
-    _$infoListAtom.reportRead();
-    return super.infoList;
-  }
-
-  @override
-  set infoList(ObservableList<Information> value) {
-    _$infoListAtom.reportWrite(value, super.infoList, () {
-      super.infoList = value;
-    });
+  Future<void> logout(BuildContext context) {
+    return _$logoutAsyncAction.run(() => super.logout(context));
   }
 
   late final _$addInformationAsyncAction =
@@ -86,6 +93,7 @@ mixin _$InformationsStore on InformationsStoreBase, Store {
   String toString() {
     return '''
 text: ${text},
+loggedInUserName: ${loggedInUserName},
 infoList: ${infoList}
     ''';
   }

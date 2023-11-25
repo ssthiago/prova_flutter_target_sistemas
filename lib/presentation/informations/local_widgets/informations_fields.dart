@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
 import 'package:prova_flutter_target_sistemas/core/strings_constants.dart';
 import 'package:prova_flutter_target_sistemas/core/utils/validate.dart';
+import 'package:prova_flutter_target_sistemas/domian/entities/information.dart';
 import 'package:prova_flutter_target_sistemas/presentation/common_widgets/bottom_sheet/bottom_sheet_widget.dart';
 import 'package:prova_flutter_target_sistemas/presentation/common_widgets/rounded_button.dart';
 import 'package:prova_flutter_target_sistemas/presentation/informations/informations_store.dart';
@@ -44,6 +46,48 @@ class InformationsFields extends StatelessWidget {
             const SizedBox(height: 16.0),
             Observer(
               builder: (_) => Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  FutureBuilder(
+                    future: informationsStore.infoList,
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        return ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          shrinkWrap: true,
+                          itemBuilder: (context, index) => Card(
+                            child: ListTile(
+                              title: Text(snapshot.data![index].text),
+                              // Adicione botões de edição/exclusão conforme necessário
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit),
+                                    onPressed: () {
+                                      // Lógica para editar a informação
+                                      // Você pode exibir um modal de edição ou navegar para uma nova tela de edição
+                                    },
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete),
+                                    onPressed: () {
+                                      // Lógica para excluir a informação
+                                      // informationsStore.removeInformation(info);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const Text('Carregando...');
+                      }
+                    },
+                  )
+                ],
+/*
                 children: informationsStore.infoList.map((info) {
                   return Card(
                     child: ListTile(
@@ -71,6 +115,7 @@ class InformationsFields extends StatelessWidget {
                     ),
                   );
                 }).toList(),
+*/
               ),
             ),
           ],

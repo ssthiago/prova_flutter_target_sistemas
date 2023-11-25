@@ -33,8 +33,19 @@ abstract class InformationsStoreBase with Store {
     return Future.value(authenticatedUserSession?.user.name ?? '');
   }
 
-  @observable
-  ObservableList<Information> infoList = ObservableList<Information>();
+  //@observable
+  final ObservableList<Information> informationList = ObservableList<Information>();
+
+  @computed
+  Future<ObservableList<Information>> get infoList async {
+    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
+    var imformationList = await informationManager.getInformationMap();
+    if (imformationList.containsKey(userSession!.user.id)) {
+      var a = ObservableList<Information>.of(imformationList[userSession.user.id]!);
+      return a;
+    }
+    return ObservableList<Information>();
+  }
 
   TextEditingController textFieldController = TextEditingController();
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -49,12 +60,6 @@ abstract class InformationsStoreBase with Store {
         GoRouter.of(context).pushReplacement('/');
       }
     });
-/*
-    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
-    await userSessionManager.removeSession(userSession!.user.id!).then(
-          (value) => GoRouter.of(context).pushReplacement('/'),
-        );
-*/
   }
 
   @action
@@ -67,6 +72,7 @@ abstract class InformationsStoreBase with Store {
     final newInformation =
         Information(text: textFieldController.text /*, timestamp: DateTime.now()*/);
     await informationManager.addInformation(userSession!.user.id!, newInformation);
+    informationList.add(newInformation);
     text = ''; // Limpa o campo de texto após adicionar a informação
     textFieldController.text = '';
   }
@@ -74,10 +80,10 @@ abstract class InformationsStoreBase with Store {
   @action
   Future<void> editInformation(Information oldInformation, Information newInformation) async {
     final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
-    final index = infoList.indexWhere((info) => info == oldInformation);
+    final index = informationList.indexWhere((info) => info == oldInformation);
 
     if (index != -1) {
-      infoList[index] = newInformation;
+      informationList[index] = newInformation;
       await informationManager.addInformation(userSession!.user.id!, newInformation);
     }
   }
@@ -85,7 +91,7 @@ abstract class InformationsStoreBase with Store {
   @action
   Future<void> removeInformation(Information information, int index) async {
     final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
-    infoList.remove(information);
+    informationList.remove(information);
     await informationManager.removeInformation(userSession!.user.id!, index);
   }
 
