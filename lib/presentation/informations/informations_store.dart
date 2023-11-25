@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:mobx/mobx.dart';
 import 'package:prova_flutter_target_sistemas/data/services/authenticated/i_user_session_manager.dart';
 import 'package:prova_flutter_target_sistemas/data/services/information/i_information_manager.dart';
@@ -19,6 +20,12 @@ abstract class InformationsStoreBase with Store {
   @observable
   String text = '';
 
+  @computed
+  Future<String> get loggedInUserName async {
+    UserSession? authenticatedUserSession = await userSessionManager.getAuthenticatedUser();
+    return Future.value(authenticatedUserSession?.user.name ?? '');
+  }
+
   @observable
   ObservableList<Information> infoList = ObservableList<Information>();
 
@@ -27,6 +34,14 @@ abstract class InformationsStoreBase with Store {
 
   @action
   void setText(String value) => text = value;
+
+  @action
+  Future<void> logout(BuildContext context) async {
+    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
+    await userSessionManager.removeSession(userSession!.user.id!).then(
+          (value) => GoRouter.of(context).pushReplacement('/'),
+        );
+  }
 
   @action
   Future<void> addInformation() async {
