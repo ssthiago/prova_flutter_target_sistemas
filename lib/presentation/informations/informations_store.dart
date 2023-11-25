@@ -34,30 +34,30 @@ abstract class InformationsStoreBase with Store {
     if (!isValid) {
       return;
     }
-    final UserSession userSession = await userSessionManager.getAuthenticatedUser();
+    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
     final newInformation =
         Information(text: textFieldController.text /*, timestamp: DateTime.now()*/);
-    await informationManager.addInformation(userSession.user.id!, newInformation);
+    await informationManager.addInformation(userSession!.user.id!, newInformation);
     text = ''; // Limpa o campo de texto após adicionar a informação
     textFieldController.text = '';
   }
 
   @action
   Future<void> editInformation(Information oldInformation, Information newInformation) async {
-    final UserSession userSession = await userSessionManager.getAuthenticatedUser();
+    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
     final index = infoList.indexWhere((info) => info == oldInformation);
 
     if (index != -1) {
       infoList[index] = newInformation;
-      await informationManager.addInformation(userSession.user.id!, newInformation);
+      await informationManager.addInformation(userSession!.user.id!, newInformation);
     }
   }
 
   @action
   Future<void> removeInformation(Information information, int index) async {
-    final UserSession userSession = await userSessionManager.getAuthenticatedUser();
+    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
     infoList.remove(information);
-    await informationManager.removeInformation(userSession.user.id!, index);
+    await informationManager.removeInformation(userSession!.user.id!, index);
   }
 
   Future<void> openExternalUrl(String url) async {

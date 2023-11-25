@@ -66,7 +66,8 @@ abstract class LoginStoreBase with Store {
   @action
   void togglePasswordObscure() => isPasswordObscure = !isPasswordObscure;
 
-  void _goToInformationPage(BuildContext context) => GoRouter.of(context).go('/informations');
+  void _goToInformationPage(BuildContext context) =>
+      GoRouter.of(context).pushReplacement('/informations');
 
   Future<void> openExternalUrl(String url) async {
     if (!await launchUrl(Uri.parse(url))) {
