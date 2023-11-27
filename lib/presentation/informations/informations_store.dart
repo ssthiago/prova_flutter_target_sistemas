@@ -27,14 +27,20 @@ abstract class InformationsStoreBase with Store {
   @observable
   String text = '';
 
+  //@observable
+  ObservableList<Information> informationList = ObservableList<Information>();
+
+  TextEditingController textFieldController = TextEditingController();
+  @observable
+  TextEditingController editTextFieldController = TextEditingController();
+
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @computed
   Future<String> get loggedInUserName async {
     UserSession? authenticatedUserSession = await userSessionManager.getAuthenticatedUser();
     return Future.value(authenticatedUserSession?.user.name ?? '');
   }
-
-  //@observable
-  ObservableList<Information> informationList = ObservableList<Information>();
 
   @computed
   Future<ObservableList<Information>> get inicializeInformations async {
@@ -46,12 +52,6 @@ abstract class InformationsStoreBase with Store {
     }
     return ObservableList<Information>();
   }
-
-  TextEditingController textFieldController = TextEditingController();
-  @observable
-  TextEditingController editTextFieldController = TextEditingController();
-
-  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @action
   void setText(String value) => text = value;

@@ -40,12 +40,34 @@ class Services {
     getIt.registerSingleton<LoginUseCase>(
       LoginUseCase(getIt.get<IAuthenticationRepository>(), getIt.get<IUserSessionManager>()),
     );
-    getIt.registerSingleton<LoginStore>(LoginStore(
-        loginUseCase: getIt.get<LoginUseCase>(), bottomSheetStore: getIt.get<BottomSheetStore>()));
+    getIt.registerFactory(
+      () => LoginStore(
+        loginUseCase: getIt.get<LoginUseCase>(),
+        bottomSheetStore: getIt.get<BottomSheetStore>(),
+      ),
+    );
+/*
+    getIt.registerSingleton<LoginStore>(
+      LoginStore(
+        loginUseCase: getIt.get<LoginUseCase>(),
+        bottomSheetStore: getIt.get<BottomSheetStore>(),
+      ),
+    );
+*/
 
     getIt.registerSingleton<IInformationsManager>(
         InformationsManager(getIt.get<SharedPreferences>()));
     getIt.registerSingleton<LogoutUseCase>(LogoutUseCase(getIt.get<IUserSessionManager>()));
+
+    getIt.registerFactory<InformationsStore>(
+      () => InformationsStore(
+        informationManager: getIt.get<IInformationsManager>(),
+        userSessionManager: getIt.get<IUserSessionManager>(),
+        logoutUseCase: getIt.get<LogoutUseCase>(),
+      ),
+    );
+/*
+
     getIt.registerSingleton<InformationsStore>(
       InformationsStore(
         informationManager: getIt.get<IInformationsManager>(),
@@ -53,5 +75,6 @@ class Services {
         logoutUseCase: getIt.get<LogoutUseCase>(),
       ),
     );
+*/
   }
 }
