@@ -87,7 +87,7 @@ abstract class InformationsStoreBase with Store {
 
     if (index != -1 && oldInformation.text != newInformation.text) {
       informationList[index] = newInformation;
-      await informationManager.addInformation(authenticatedUserId!, newInformation);
+      await informationManager.editInformation(authenticatedUserId!, index, newInformation);
     }
   }
 
