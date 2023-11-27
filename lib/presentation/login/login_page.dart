@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final LoginStore loginStore = GetIt.I.get<LoginStore>();
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      // onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(),

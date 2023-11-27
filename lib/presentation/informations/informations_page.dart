@@ -13,7 +13,7 @@ class InformationsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final InformationsStore informationsStore = GetIt.I.get<InformationsStore>();
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      // onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
