@@ -38,16 +38,19 @@ abstract class InformationsStoreBase with Store {
 
   @computed
   Future<ObservableList<Information>> get inicializeInformations async {
-    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
+    final String? authenticatedUserId = await _getAutenticatedUserId();
     var imformationMap = await informationManager.getInformationMap();
-    if (imformationMap.containsKey(userSession!.user.id)) {
-      informationList = ObservableList<Information>.of(imformationMap[userSession.user.id]!);
+    if (imformationMap.containsKey(authenticatedUserId!)) {
+      informationList = ObservableList<Information>.of(imformationMap[authenticatedUserId]!);
       return informationList;
     }
     return ObservableList<Information>();
   }
 
   TextEditingController textFieldController = TextEditingController();
+  @observable
+  TextEditingController editTextFieldController = TextEditingController();
+
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @action
@@ -68,10 +71,10 @@ abstract class InformationsStoreBase with Store {
     if (!isValid) {
       return;
     }
-    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
+    final String? authenticatedUserId = await _getAutenticatedUserId();
     final newInformation =
         Information(text: textFieldController.text /*, timestamp: DateTime.now()*/);
-    await informationManager.addInformation(userSession!.user.id!, newInformation);
+    await informationManager.addInformation(authenticatedUserId!, newInformation);
     informationList.add(newInformation);
     text = ''; // Limpa o campo de texto após adicionar a informação
     textFieldController.text = '';
@@ -79,20 +82,25 @@ abstract class InformationsStoreBase with Store {
 
   @action
   Future<void> editInformation(Information oldInformation, Information newInformation) async {
-    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
+    final String? authenticatedUserId = await _getAutenticatedUserId();
     final index = informationList.indexWhere((info) => info == oldInformation);
 
-    if (index != -1) {
+    if (index != -1 && oldInformation.text != newInformation.text) {
       informationList[index] = newInformation;
-      await informationManager.addInformation(userSession!.user.id!, newInformation);
+      await informationManager.addInformation(authenticatedUserId!, newInformation);
     }
   }
 
   @action
   Future<void> removeInformation(Information information, int index) async {
-    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
+    final String? authenticatedUserId = await _getAutenticatedUserId();
     informationList.remove(information);
-    await informationManager.removeInformation(userSession!.user.id!, index);
+    await informationManager.removeInformation(authenticatedUserId!, index);
+  }
+
+  Future<String?> _getAutenticatedUserId() async {
+    final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
+    return userSession?.user.id;
   }
 
   Future<void> openExternalUrl(String url) async {

@@ -43,6 +43,23 @@ mixin _$InformationsStore on InformationsStoreBase, Store {
     });
   }
 
+  late final _$editTextFieldControllerAtom = Atom(
+      name: 'InformationsStoreBase.editTextFieldController', context: context);
+
+  @override
+  TextEditingController get editTextFieldController {
+    _$editTextFieldControllerAtom.reportRead();
+    return super.editTextFieldController;
+  }
+
+  @override
+  set editTextFieldController(TextEditingController value) {
+    _$editTextFieldControllerAtom
+        .reportWrite(value, super.editTextFieldController, () {
+      super.editTextFieldController = value;
+    });
+  }
+
   late final _$logoutAsyncAction =
       AsyncAction('InformationsStoreBase.logout', context: context);
 
@@ -96,6 +113,7 @@ mixin _$InformationsStore on InformationsStoreBase, Store {
   String toString() {
     return '''
 text: ${text},
+editTextFieldController: ${editTextFieldController},
 loggedInUserName: ${loggedInUserName},
 inicializeInformations: ${inicializeInformations}
     ''';

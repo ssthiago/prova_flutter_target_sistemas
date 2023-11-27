@@ -66,15 +66,82 @@ class InformationsFields extends StatelessWidget {
                                   IconButton(
                                     icon: const Icon(Icons.edit),
                                     onPressed: () {
-                                      // Lógica para editar a informação
-                                      // Você pode exibir um modal de edição ou navegar para uma nova tela de edição
+                                      Information _oldInformation =
+                                          informationsStore.informationList[index];
+                                      informationsStore.editTextFieldController.text =
+                                          _oldInformation.text;
+                                      // Abre um AlertDialog para edição
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Editar Informação'),
+                                            content: TextField(
+                                              controller: informationsStore.editTextFieldController,
+                                              decoration:
+                                                  const InputDecoration(labelText: 'Novo Texto'),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  // Cancela a edição e fecha o AlertDialog
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Cancelar'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  // Salva a edição e fecha o AlertDialog
+                                                  informationsStore.editInformation(
+                                                    _oldInformation,
+                                                    Information(
+                                                      text: informationsStore
+                                                          .editTextFieldController.text,
+                                                    ),
+                                                  );
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Salvar'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                   ),
                                   IconButton(
                                     icon: const Icon(Icons.delete),
                                     onPressed: () {
-                                      // Lógica para excluir a informação
-                                      // informationsStore.removeInformation(info);
+                                      // Abre um AlertDialog para confirmar a exclusão
+                                      showDialog(
+                                        context: context,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            title: const Text('Confirmar Exclusão'),
+                                            content: const Text(
+                                                'Tem certeza de que deseja excluir esta informação?'),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () {
+                                                  // Cancela a exclusão e fecha o AlertDialog
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Cancelar'),
+                                              ),
+                                              TextButton(
+                                                onPressed: () {
+                                                  // Confirma a exclusão e fecha o AlertDialog
+                                                  informationsStore.removeInformation(
+                                                      informationsStore.informationList[index],
+                                                      index);
+                                                  Navigator.of(context).pop();
+                                                },
+                                                child: const Text('Confirmar'),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
                                     },
                                   ),
                                 ],
