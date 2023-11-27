@@ -34,15 +34,15 @@ abstract class InformationsStoreBase with Store {
   }
 
   //@observable
-  final ObservableList<Information> informationList = ObservableList<Information>();
+  ObservableList<Information> informationList = ObservableList<Information>();
 
   @computed
-  Future<ObservableList<Information>> get infoList async {
+  Future<ObservableList<Information>> get inicializeInformations async {
     final UserSession? userSession = await userSessionManager.getAuthenticatedUser();
-    var imformationList = await informationManager.getInformationMap();
-    if (imformationList.containsKey(userSession!.user.id)) {
-      var a = ObservableList<Information>.of(imformationList[userSession.user.id]!);
-      return a;
+    var imformationMap = await informationManager.getInformationMap();
+    if (imformationMap.containsKey(userSession!.user.id)) {
+      informationList = ObservableList<Information>.of(imformationMap[userSession.user.id]!);
+      return informationList;
     }
     return ObservableList<Information>();
   }

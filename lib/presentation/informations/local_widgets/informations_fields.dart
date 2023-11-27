@@ -21,43 +21,44 @@ class InformationsFields extends StatelessWidget {
   Widget build(BuildContext context) {
     final InformationsStore informationsStore = GetIt.I.get<InformationsStore>();
 
-    return Observer(
-      builder: (_) => Form(
-        key: informationsStore.formKey,
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        child: Column(
-          children: [
-            TextFormField(
-              controller: informationsStore.textFieldController,
-              onSaved: (newValue) => informationsStore.text = newValue!,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                suffixIcon: GestureDetector(
-                  onTap: () => informationsStore.addInformation(),
-                  child: const Icon(
-                    Icons.send,
-                  ),
-                ),
-                labelText: StringsConstants.digiteSeuTexto,
-              ),
-              validator: (value) =>
-                  Validate.textInformacao(value!, label: StringsConstants.informacao),
-            ),
-            const SizedBox(height: 16.0),
-            Observer(
-              builder: (_) => Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  FutureBuilder(
-                    future: informationsStore.infoList,
-                    builder: (context, snapshot) {
-                      if (snapshot.hasData) {
-                        return ListView.builder(
-                          itemCount: snapshot.data!.length,
+    return FutureBuilder(
+        future: informationsStore.inicializeInformations,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            return Observer(
+              builder: (_) => Form(
+                key: informationsStore.formKey,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                child: Column(
+                  children: [
+                    TextFormField(
+                      controller: informationsStore.textFieldController,
+                      onSaved: (newValue) => informationsStore.text = newValue!,
+                      keyboardType: TextInputType.text,
+                      decoration: InputDecoration(
+                        suffixIcon: GestureDetector(
+                          onTap: () {
+                            informationsStore.addInformation();
+                          },
+                          child: const Icon(
+                            Icons.send,
+                          ),
+                        ),
+                        labelText: StringsConstants.digiteSeuTexto,
+                      ),
+                      validator: (value) =>
+                          Validate.textInformacao(value!, label: StringsConstants.informacao),
+                    ),
+                    const SizedBox(height: 16.0),
+                    Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        ListView.builder(
+                          itemCount: informationsStore.informationList.length,
                           shrinkWrap: true,
                           itemBuilder: (context, index) => Card(
                             child: ListTile(
-                              title: Text(snapshot.data![index].text),
+                              title: Text(informationsStore.informationList[index].text),
                               // Adicione botões de edição/exclusão conforme necessário
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
@@ -80,47 +81,17 @@ class InformationsFields extends StatelessWidget {
                               ),
                             ),
                           ),
-                        );
-                      } else {
-                        return const Text('Carregando...');
-                      }
-                    },
-                  )
-                ],
-/*
-                children: informationsStore.infoList.map((info) {
-                  return Card(
-                    child: ListTile(
-                      title: Text(info.text),
-                      // Adicione botões de edição/exclusão conforme necessário
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Icons.edit),
-                            onPressed: () {
-                              // Lógica para editar a informação
-                              // Você pode exibir um modal de edição ou navegar para uma nova tela de edição
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.delete),
-                            onPressed: () {
-                              // Lógica para excluir a informação
-                              // informationsStore.removeInformation(info);
-                            },
-                          ),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
-                  );
-                }).toList(),
-*/
+                  ],
+                ),
               ),
-            ),
-          ],
-        ),
-      ),
-    );
+            );
+          } else {
+            // Se o Future ainda não estiver concluído, exiba um indicador de carregamento
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
   }
 }

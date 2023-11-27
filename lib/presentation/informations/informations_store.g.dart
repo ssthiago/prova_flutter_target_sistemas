@@ -16,13 +16,16 @@ mixin _$InformationsStore on InformationsStoreBase, Store {
           Computed<Future<String>>(() => super.loggedInUserName,
               name: 'InformationsStoreBase.loggedInUserName'))
       .value;
-  Computed<Future<ObservableList<Information>>>? _$infoListComputed;
+  Computed<Future<ObservableList<Information>>>?
+      _$inicializeInformationsComputed;
 
   @override
-  Future<ObservableList<Information>> get infoList => (_$infoListComputed ??=
-          Computed<Future<ObservableList<Information>>>(() => super.infoList,
-              name: 'InformationsStoreBase.infoList'))
-      .value;
+  Future<ObservableList<Information>> get inicializeInformations =>
+      (_$inicializeInformationsComputed ??=
+              Computed<Future<ObservableList<Information>>>(
+                  () => super.inicializeInformations,
+                  name: 'InformationsStoreBase.inicializeInformations'))
+          .value;
 
   late final _$textAtom =
       Atom(name: 'InformationsStoreBase.text', context: context);
@@ -94,7 +97,7 @@ mixin _$InformationsStore on InformationsStoreBase, Store {
     return '''
 text: ${text},
 loggedInUserName: ${loggedInUserName},
-infoList: ${infoList}
+inicializeInformations: ${inicializeInformations}
     ''';
   }
 }
