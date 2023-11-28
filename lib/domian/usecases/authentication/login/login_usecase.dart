@@ -28,7 +28,7 @@ class LoginUseCase implements IUseCase<LoginParams, Result> {
         );
         return LoginSuccess(authenticatedUser: authenticatedUser);
       } else {
-        return LoginFailure('Username ou senha inválida');
+        return LoginFailure('Username ou senha inválidos');
       }
     } catch (e) {
       // Tratar exceções se necessário

@@ -2,7 +2,7 @@
 
 ## Flutter Prova App
 
-Este projeto é um aplicativo Flutter desenvolvido por min, Thiago Sarmento Magalgães,  como resposta ao desafio "Prova Flutter", que consiste em criar um aplicativo com telas de login e captura de informações, seguindo as diretrizes fornecidas.
+Este projeto é um aplicativo Flutter desenvolvido por mim, Thiago Sarmento Magalgães, como resposta ao desafio "Prova Flutter", que consiste em criar um aplicativo com telas de login e captura de informações, seguindo as diretrizes fornecidas.
 
 ### Estrutura do Projeto
 
@@ -97,7 +97,7 @@ A estrutura do projeto segue uma abordagem baseada em Clean Architecture, organi
 
 ### Clean Architecture (Layer First)
 
-A escolha da Clean Architecture - layer first, com suas camadas distintas (domain, data, presentation), permite uma separação clara das responsabilidades e facilita a manutenção e testabilidade do código.
+A escolha da Clean Architecture - layer first, com suas camadas distintas (domain, data, presentation), me permitiu uma separação clara das responsabilidades e facilidade de manutenção e testabilidade do código.
 
 - **Domain**: Contém as entidades, repositórios e casos de uso (use cases) da aplicação. Aqui, definimos as regras de negócios e a lógica de aplicação.
 
@@ -172,7 +172,7 @@ Os seguintes dados foram mockados no [mockapi.io](https://mockapi.io/) e podem s
 
 ### Considerações Finais
 
-No ponto de vista, o uso da Clean Architecture, mesmo em um projeto relativamente pequeno, oferece benefícios significativos em termos de manutenção, testabilidade e escalabilidade do código. A divisão clara das responsabilidades entre as camadas facilita a expansão do aplicativo e a introdução de novos recursos no futuro.
+No meu ponto de vista, o uso da Clean Architecture, mesmo em um projeto relativamente pequeno, oferece benefícios significativos em termos de manutenção, testabilidade e escalabilidade do código. A divisão clara das responsabilidades entre as camadas facilita a expansão do aplicativo e a introdução de novos recursos no futuro.
 
 Este projeto é uma demonstração do uso de boas práticas de desenvolvimento Flutter, incluindo gerenciamento de estado com MobX, estruturação de código em camadas e integração com uma API mock para simular a comunicação remota.
 
