@@ -29,6 +29,7 @@ class InformationsFields extends StatelessWidget {
               key: informationsStore.formKey,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
                   TextFormField(
                     controller: informationsStore.textFieldController,
@@ -49,107 +50,106 @@ class InformationsFields extends StatelessWidget {
                         Validate.textInformacao(value!, label: StringsConstants.informacao),
                   ),
                   const SizedBox(height: 16.0),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ListView.builder(
-                        itemCount: informationsStore.informationList.length,
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) => Card(
-                          child: ListTile(
-                            title: Text(informationsStore.informationList[index].text),
-                            // Adicione botões de edição/exclusão conforme necessário
-                            trailing: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.edit),
-                                  onPressed: () {
-                                    Information oldInformation =
-                                        informationsStore.informationList[index];
-                                    informationsStore.editTextFieldController.text =
-                                        oldInformation.text;
-                                    // Abre um AlertDialog para edição
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Editar Informação'),
-                                          content: TextField(
-                                            controller: informationsStore.editTextFieldController,
-                                            decoration:
-                                                const InputDecoration(labelText: 'Novo Texto'),
+                  SingleChildScrollView(
+                    physics: const ScrollPhysics(),
+                    child: ListView.builder(
+                      itemCount: informationsStore.informationList.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemBuilder: (context, index) => Card(
+                        child: ListTile(
+                          title: Text(informationsStore.informationList[index].text),
+                          // Adicione botões de edição/exclusão conforme necessário
+                          trailing: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(Icons.edit),
+                                onPressed: () {
+                                  Information oldInformation =
+                                      informationsStore.informationList[index];
+                                  informationsStore.editTextFieldController.text =
+                                      oldInformation.text;
+                                  // Abre um AlertDialog para edição
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Editar Informação'),
+                                        content: TextField(
+                                          controller: informationsStore.editTextFieldController,
+                                          decoration:
+                                              const InputDecoration(labelText: 'Novo Texto'),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              // Cancela a edição e fecha o AlertDialog
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Cancelar'),
                                           ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                // Cancela a edição e fecha o AlertDialog
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Cancelar'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                // Salva a edição e fecha o AlertDialog
-                                                informationsStore.editInformation(
-                                                  oldInformation,
-                                                  Information(
-                                                    text: informationsStore
-                                                        .editTextFieldController.text,
-                                                  ),
-                                                );
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Salvar'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.delete),
-                                  onPressed: () {
-                                    // Abre um AlertDialog para confirmar a exclusão
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: const Text('Confirmar Exclusão'),
-                                          content: const Text(
-                                              'Tem certeza de que deseja excluir esta informação?'),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () {
-                                                // Cancela a exclusão e fecha o AlertDialog
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Cancelar'),
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                // Confirma a exclusão e fecha o AlertDialog
-                                                informationsStore.removeInformation(
-                                                    informationsStore.informationList[index],
-                                                    index);
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text('Confirmar'),
-                                            ),
-                                          ],
-                                        );
-                                      },
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
+                                          TextButton(
+                                            onPressed: () {
+                                              // Salva a edição e fecha o AlertDialog
+                                              informationsStore.editInformation(
+                                                oldInformation,
+                                                Information(
+                                                  text: informationsStore
+                                                      .editTextFieldController.text,
+                                                ),
+                                              );
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Salvar'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.delete),
+                                onPressed: () {
+                                  // Abre um AlertDialog para confirmar a exclusão
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Text('Confirmar Exclusão'),
+                                        content: const Text(
+                                            'Tem certeza de que deseja excluir esta informação?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              // Cancela a exclusão e fecha o AlertDialog
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Cancelar'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              // Confirma a exclusão e fecha o AlertDialog
+                                              informationsStore.removeInformation(
+                                                  informationsStore.informationList[index], index);
+                                              Navigator.of(context).pop();
+                                            },
+                                            child: const Text('Confirmar'),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
                           ),
                         ),
-                      )
-                    ],
+                      ),
+                    ),
                   ),
+                  const SizedBox(height: 60.0),
                 ],
               ),
             ),
