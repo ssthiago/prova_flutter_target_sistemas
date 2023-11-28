@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:prova_flutter_target_sistemas/data/services/authenticated/i_user_session_manager.dart';
 import 'package:prova_flutter_target_sistemas/domian/entities/user.dart';
+import 'package:prova_flutter_target_sistemas/domian/entities/user_session.dart';
 import 'package:prova_flutter_target_sistemas/domian/repositories/i_authentication_repository.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/login_usecase.dart';
 import 'package:prova_flutter_target_sistemas/domian/usecases/authentication/login/result/login_failure.dart';
@@ -12,12 +13,16 @@ class MockAuthenticationRepository extends Mock implements IAuthenticationReposi
 
 class MockUserSessionManager extends Mock implements IUserSessionManager {}
 
+class FakeUserSession extends Fake implements UserSession {}
+
 void main() {
   group('LoginUseCase', () {
     late MockAuthenticationRepository mockAuthenticationRepository;
     late MockUserSessionManager mockUserSessionManager;
     late LoginUseCase loginUseCase;
-
+    setUpAll(() {
+      registerFallbackValue(FakeUserSession());
+    });
     setUp(() {
       mockAuthenticationRepository = MockAuthenticationRepository();
       mockUserSessionManager = MockUserSessionManager();
@@ -37,7 +42,13 @@ void main() {
             username: params.username, password: params.password),
       ).thenAnswer(
         (_) async =>
-            Future.value(User(id: '1', name: 'Thiago', username: 'user', password: 'password')),
+            Future.value(User(id: '1111', name: 'Thiago', username: 'user', password: 'password')),
+      );
+
+      when(
+        () => mockUserSessionManager.addSession(any(), FakeUserSession()),
+      ).thenAnswer(
+        (_) async => Future.value(),
       );
 
       // Act
