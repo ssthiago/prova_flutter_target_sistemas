@@ -78,11 +78,11 @@ class InformationsFields extends StatelessWidget {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Text('Editar Informação'),
+                                        title: const Text(StringsConstants.editarInformacoes),
                                         content: TextField(
                                           controller: informationsStore.editTextFieldController,
-                                          decoration:
-                                              const InputDecoration(labelText: 'Novo Texto'),
+                                          decoration: const InputDecoration(
+                                              labelText: StringsConstants.novoTexto),
                                         ),
                                         actions: [
                                           TextButton(
@@ -90,7 +90,7 @@ class InformationsFields extends StatelessWidget {
                                               // Cancela a edição e fecha o AlertDialog
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text('Cancelar'),
+                                            child: const Text(StringsConstants.cancelar),
                                           ),
                                           TextButton(
                                             onPressed: () {
@@ -104,7 +104,7 @@ class InformationsFields extends StatelessWidget {
                                               );
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text('Salvar'),
+                                            child: const Text(StringsConstants.salvar),
                                           ),
                                         ],
                                       );
@@ -120,16 +120,15 @@ class InformationsFields extends StatelessWidget {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Text('Confirmar Exclusão'),
-                                        content: const Text(
-                                            'Tem certeza de que deseja excluir esta informação?'),
+                                        title: const Text(StringsConstants.confirmarExclusao),
+                                        content: const Text(StringsConstants.certezaDesejaExcluir),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
                                               // Cancela a exclusão e fecha o AlertDialog
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text('Cancelar'),
+                                            child: const Text(StringsConstants.cancelar),
                                           ),
                                           TextButton(
                                             onPressed: () {
@@ -138,7 +137,7 @@ class InformationsFields extends StatelessWidget {
                                                   informationsStore.informationList[index], index);
                                               Navigator.of(context).pop();
                                             },
-                                            child: const Text('Confirmar'),
+                                            child: const Text(StringsConstants.confirmar),
                                           ),
                                         ],
                                       );

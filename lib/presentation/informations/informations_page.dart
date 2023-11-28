@@ -31,8 +31,8 @@ class InformationsPage extends StatelessWidget {
           ],
           title: FutureBuilder<String>(
             future: informationsStore.loggedInUserName,
-            builder: (context, snapshot) =>
-                Text('Olá, ${snapshot.data}', style: const TextStyle(fontSize: 18)),
+            builder: (context, snapshot) => Text('${StringsConstants.ola}, ${snapshot.data}',
+                style: const TextStyle(fontSize: 18)),
           ),
         ),
         body: Stack(
@@ -64,7 +64,7 @@ class InformationsPage extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 child: const Text(
-                  'Política de privacidade',
+                  StringsConstants.politicaPrivacidade,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.blue,
