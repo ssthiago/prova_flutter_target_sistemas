@@ -46,14 +46,6 @@ class Services {
         bottomSheetStore: getIt.get<BottomSheetStore>(),
       ),
     );
-/*
-    getIt.registerSingleton<LoginStore>(
-      LoginStore(
-        loginUseCase: getIt.get<LoginUseCase>(),
-        bottomSheetStore: getIt.get<BottomSheetStore>(),
-      ),
-    );
-*/
 
     getIt.registerSingleton<IInformationsManager>(
         InformationsManager(getIt.get<SharedPreferences>()));
@@ -66,15 +58,5 @@ class Services {
         logoutUseCase: getIt.get<LogoutUseCase>(),
       ),
     );
-/*
-
-    getIt.registerSingleton<InformationsStore>(
-      InformationsStore(
-        informationManager: getIt.get<IInformationsManager>(),
-        userSessionManager: getIt.get<IUserSessionManager>(),
-        logoutUseCase: getIt.get<LogoutUseCase>(),
-      ),
-    );
-*/
   }
 }
