@@ -1,17 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:prova_flutter_target_sistemas/presentation/common_widgets/rounded_button.dart';
+import 'package:prova_flutter_target_sistemas/core/strings_constants.dart';
+import 'package:prova_flutter_target_sistemas/presentation/informations/local_widgets/informations_fields.dart';
+
+import 'informations_store.dart';
 
 class InformationsPage extends StatelessWidget {
   const InformationsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final InformationsStore informationsStore = GetIt.I.get<InformationsStore>();
     return GestureDetector(
-      onTap: () => FocusScope.of(context).unfocus(),
+      // onTap: () => FocusScope.of(context).unfocus(),
       child: Scaffold(
         backgroundColor: Colors.white,
-        appBar: AppBar(),
+        appBar: AppBar(
+          actions: [
+            GestureDetector(
+              onTap: () => informationsStore.logout(context),
+              child: const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Icon(
+                  Icons.logout,
+                ),
+              ),
+            ),
+            const SizedBox(height: 16.0),
+          ],
+          title: FutureBuilder<String>(
+            future: informationsStore.loggedInUserName,
+            builder: (context, snapshot) => Text('${StringsConstants.ola}, ${snapshot.data}',
+                style: const TextStyle(fontSize: 18)),
+          ),
+        ),
         body: Stack(
           children: [
             Center(
@@ -22,7 +45,7 @@ class InformationsPage extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Informations',
+                      StringsConstants.informacoes,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 30,
@@ -30,9 +53,8 @@ class InformationsPage extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    //TODO testar widget Gap()
                     const SizedBox(height: 15),
-                    //buildFields(),
+                    InformationsFields(context: context),
                   ],
                 ),
               ),
@@ -42,7 +64,7 @@ class InformationsPage extends StatelessWidget {
               child: Container(
                 margin: const EdgeInsets.only(bottom: 20),
                 child: const Text(
-                  'Política de privacidade',
+                  StringsConstants.politicaPrivacidade,
                   style: TextStyle(
                     fontSize: 12,
                     color: Colors.blue,
@@ -52,75 +74,6 @@ class InformationsPage extends StatelessWidget {
             ),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildFields() {
-    return Form(
-      //key: controller.formKey,
-      autovalidateMode: AutovalidateMode.onUserInteraction,
-      child: Column(
-        children: [
-          TextFormField(
-            //controller: controller.emailFieldController,
-            //onSaved: (newValue) => controller.email = newValue,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              suffixIcon: Icon(
-                Icons.person_2_outlined,
-              ),
-              labelText: 'email',
-            ),
-            //validator: (value) => Validate.email(value!, label: email),
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            //controller: controller.passwordFieldController,
-            //onSaved: (newValue) => controller.password = newValue,
-            //onChanged: controller.onPasswordChanged,
-            //validator: (value) => Validate.password(value!, label: senha),
-            //obscureText: controller.isPasswordObscure,
-            decoration: InputDecoration(
-              labelText: 'senha',
-              suffixIcon: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  GestureDetector(
-                    //onTap: () => controller.togglePasswordHidden(),
-                    child: const Icon(
-                      //controller.isPasswordObscure ? Icons.visibility_off : Icons.visibility,
-                      Icons.visibility,
-                      color: Colors.blue,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Icon(
-                    Icons.lock_outline_rounded,
-                  ),
-                  const SizedBox(width: 10),
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(height: 50),
-          SizedBox(
-            width: double.infinity,
-            child: RoundedButton(
-              enabled: true,
-              isLoading: false,
-              text: 'login',
-              onPress: () {},
-/*
-              enabled: (!controller.loginState.isLoading),
-              isLoading: (controller.loginState.isLoading),
-              text: login,
-              onPress: () => controller.login(),
-*/
-            ),
-          ),
-        ],
       ),
     );
   }

@@ -5,4 +5,5 @@ abstract class IUserSessionManager {
   Future<UserSession?> getSession(String userId);
   Future<void> removeSession(String userId);
   Future<Map<String, UserSession>> getSessions();
+  Future<UserSession?> getAuthenticatedUser();
 }
