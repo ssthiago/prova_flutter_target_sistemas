@@ -20,7 +20,8 @@ class InformationsFields extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final InformationsStore informationsStore = GetIt.I.get<InformationsStore>();
-
+    // Mova a definição do FocusNode para o escopo do widget
+    final FocusNode textFormFieldFocus = FocusNode();
     return FutureBuilder(
         future: informationsStore.inicializeInformations,
         builder: (context, snapshot) {
@@ -32,6 +33,7 @@ class InformationsFields extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextFormField(
+                    focusNode: textFormFieldFocus,
                     controller: informationsStore.textFieldController,
                     onSaved: (newValue) => informationsStore.text = newValue!,
                     keyboardType: TextInputType.text,
@@ -39,6 +41,7 @@ class InformationsFields extends StatelessWidget {
                       suffixIcon: GestureDetector(
                         onTap: () {
                           informationsStore.addInformation();
+                          FocusScope.of(context).requestFocus(textFormFieldFocus);
                         },
                         child: const Icon(
                           Icons.send,
