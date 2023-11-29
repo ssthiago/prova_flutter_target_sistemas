@@ -2,7 +2,7 @@
 
 ## Flutter Prova App
 
-Este projeto é um aplicativo Flutter desenvolvido por mim, Thiago Sarmento Magalgães, como resposta ao desafio "Prova Flutter", que consiste em criar um aplicativo com telas de login e captura de informações, seguindo as diretrizes fornecidas.
+Este projeto é um aplicativo Flutter desenvolvido por mim, Thiago Sarmento Magalhães, como resposta ao desafio "Prova Flutter", que consiste em criar um aplicativo com telas de login e captura de informações, seguindo as diretrizes fornecidas.
 
 ### Estrutura do Projeto
 
@@ -127,7 +127,7 @@ As imagens de exemplo para as telas de login e captura de informações não est
 
 ### Dados Mockados
 
-Os seguintes dados foram mockados no [mockapi.io](https://mockapi.io/) e podem ser utilizados pelos avaliadores para testar a aplicação. Valeu ressaltar que :
+Os seguintes dados foram mockados no [mockapi.io](https://mockapi.io/) e podem ser utilizados pelos avaliadores para testar a aplicação. Vale ressaltar que :
 ```json
 [
   {
